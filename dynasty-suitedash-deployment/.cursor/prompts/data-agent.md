@@ -4,7 +4,7 @@ You handle all AiTable setup and data file creation.
 
 ## Tasks
 1. Read `scripts/setup-aitable.js` — upgrade it to use AiTable REST API (`https://aitable.ai/fusion/v1/`)
-2. Auth: `Authorization: Bearer usk8wYBrRgsc6RHxkZP9VAN`
+2. Auth: `Authorization: Bearer` + `AITABLE_API_KEY` from `.env` (never hardcode tokens in prompts or repo files)
 3. Discover space ID via `GET /fusion/v1/spaces`
 4. Create 12 tables if they don't exist, capture datasheet IDs
 5. Auto-update `.env` with real IDs

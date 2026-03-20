@@ -12,7 +12,7 @@
 | `npm run import:n8n` with `NODE_TLS_REJECT_UNAUTHORIZED=0` | TLS bypass worked; **all 9 imports returned HTTP 500** from n8n (server-side — fix host/cert/API on Flint or import via UI). |
 | `node scripts/deploy-niche.js plumbing` | **OK** after fixing `deploy-niche.js` for `sales_pipeline` / `service_pipeline` as `{ stages: [...] }` objects. Outputs manual SuiteDash checklist. |
 | Dashboard | **`http://localhost:3000`** returns **200** (Express + static UI). Server was started in background for verification. |
-| `npm audit` | **1 high** (Next.js in devDependencies); fix requires major upgrade (`npm audit fix --force` → breaking). |
+| `npm audit` | **0** on root deps after removing unused Next/React devDependencies (re-run after `npm install`). |
 
 ## Credential / infrastructure issues (you must fix outside this repo)
 

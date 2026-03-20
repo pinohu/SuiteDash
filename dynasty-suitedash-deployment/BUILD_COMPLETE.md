@@ -33,7 +33,7 @@ Run `(Get-ChildItem -Recurse -File).Count` from the project root for an exact to
 1. **AiTable query params** in n8n still use Airtable-style `filterByFormula` in some nodes; AiTable Fusion filtering may differ — validate in n8n against your space.
 2. **Root `.env`:** Dashboard server loads `../.env` from `dashboard/`; copy `env/.env` → `.env` at repo root if needed.
 3. **QA Audit button** calls `POST /api/run-qa-audit` → `{N8N_WEBHOOK_BASE}/qa-audit-manual`; requires `N8N_WEBHOOK_BASE` in `.env` and a reachable n8n instance.
-4. **`npm audit`** may report vulnerabilities in root devDependencies (e.g. Next.js stack); address per your security policy.
+4. **`npm audit`** — root `package.json` no longer pulls Next/React as unused devDependencies; run `npm audit` periodically on production deps.
 
 ## Recommended next steps
 

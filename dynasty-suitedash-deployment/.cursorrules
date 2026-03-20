@@ -16,7 +16,7 @@ Multi-niche directory business factory powered by SuiteDash (CRM/portal), n8n (a
 - `n8n/*.json` — Importable n8n workflow definitions (import via n8n UI or API)
 - `suitedash/` — Configuration references for manual SuiteDash setup
 - `scripts/` — Node.js setup/deployment/testing utilities
-- `dashboard/` — Operations monitoring dashboard (static HTML + Chart.js)
+- `dashboard/` — Operations dashboard (Express `server.js` + static `index.html`)
 - `data/` — CSV schemas for AiTable table creation
 
 ## API Patterns
@@ -30,8 +30,7 @@ Multi-niche directory business factory powered by SuiteDash (CRM/portal), n8n (a
 
 ### AiTable API
 - Base URL: `https://aitable.ai/fusion/v1/datasheets/{TABLE_ID}`
-- Auth: Header `Authorization: Bearer {AITABLE_API_KEY}`
-- Key: `usk8wYBrRgsc6RHxkZP9VAN`
+- Auth: Header `Authorization: Bearer {AITABLE_API_KEY}` (value only in `.env` / vault — never commit or paste into rules)
 - Operations: GET (list records), POST (create), PATCH (update), DELETE
 - This is AiTable, NOT Airtable — different API format
 

@@ -9,8 +9,9 @@
     "setup:verify": "node scripts/verify-connections.js",
     "setup:niche": "node scripts/deploy-niche.js",
     "import:n8n": "node scripts/import-n8n-workflows.js",
+    "dashboard:install": "cd dashboard && npm install",
     "dashboard:dev": "cd dashboard && node server.js",
-    "dashboard:build": "cd dashboard && npx next build",
+    "dashboard:build": "cd dashboard && npm install && node --check server.js",
     "test": "node tests/test-workflows.js && node tests/test-niche-configs.js",
     "test:agents": "node tests/test-agents.js",
     "test:api": "node tests/test-connections.js",
@@ -25,13 +26,6 @@
     "dotenv": "^16.4.5",
     "openai": "^4.52.0",
     "stripe": "^15.0.0"
-  },
-  "devDependencies": {
-    "next": "^14.2.0",
-    "react": "^18.3.0",
-    "react-dom": "^18.3.0",
-    "recharts": "^2.12.0",
-    "tailwindcss": "^3.4.0"
   },
   "engines": {
     "node": ">=18.0.0"

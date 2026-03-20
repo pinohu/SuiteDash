@@ -1,0 +1,14 @@
+---
+description: Dynasty SuiteDash deployment — Node, n8n, AiTable, agents
+globs: dynasty-suitedash-deployment/**
+alwaysApply: false
+---
+
+# dynasty-suitedash-deployment
+
+- **Stack:** SuiteDash (portal/API), n8n (workflows in `n8n/`), AiTable Fusion API, Stripe webhooks, OpenAI for agents. **Not** Airtable.
+- **Auth:** SuiteDash `X-Public-ID` + `X-Secret-Key`. AiTable `Authorization: Bearer` from env. No keys in source files.
+- **Work here:** Run shell and npm from `dynasty-suitedash-deployment/` root. Use `npm test`, `npm run test:agents`, `npm run test:api` for verification when appropriate.
+- **Ship checklist:** `GO_LIVE_CHECKLIST.md` at deployment root.
+- **Edits:** Match existing JS style (functional, small modules). Touch only files needed for the task; do not strip comments unrelated to the change.
+- **Emergency / ops:** `scripts/emergency-stop.js`; dashboard exposes emergency API when `npm run dashboard:dev` runs.

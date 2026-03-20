@@ -20,6 +20,14 @@ flowchart LR
 
 See **`docs/CREDENTIALS_INVENTORY.md`** for which services map to which `.env` keys (no secrets in repo).
 
+## Go-live (clients & revenue)
+
+See **`GO_LIVE_CHECKLIST.md`** — env verification commands, first-niche rollout, production hygiene, and a **client-facing SOW template**.
+
+## Cursor (agent autonomy)
+
+Workspace root **`AGENTS.md`**, **`.cursor/rules/*.mdc`**, and **`docs/CURSOR_OPTIMIZATION.md`** (MCP starter + external references).
+
 ## Quick Start
 
 1. Clone this repo  
@@ -27,7 +35,8 @@ See **`docs/CREDENTIALS_INVENTORY.md`** for which services map to which `.env` k
 3. Copy `env/.env.example` to `.env` at the project root and fill from your vault (or keep using `env/.env`)  
 4. `cd dashboard && npm install && cd ..`  
 5. Run tests: `npm test`  
-6. Start dashboard: `npm run dashboard:dev` (serves static UI + API proxy on port 3000)
+6. Start dashboard: `npm run dashboard:dev` (serves static UI + API proxy on port 3000)  
+7. Preflight dashboard deps + syntax: `npm run dashboard:build`
 
 ## File Structure
 
