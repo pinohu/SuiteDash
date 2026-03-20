@@ -2,7 +2,7 @@
 
 Use this before onboarding **paying** clients. It merges **technical verification**, **first-niche rollout**, and a **client-facing scope** template.
 
-**Related docs:** `docs/CREDENTIALS_INVENTORY.md`, `docs/LAST_AUTOMATION_RUN.md`, `BUILD_COMPLETE.md`, `RUNBOOK.md`.
+**Related docs:** **`docs/PRODUCTION_READINESS_RUNBOOK.md`** (full ordered steps to production), `docs/CREDENTIALS_INVENTORY.md`, `docs/LAST_AUTOMATION_RUN.md`, `BUILD_COMPLETE.md`, `RUNBOOK.md`.
 
 ---
 
