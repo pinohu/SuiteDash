@@ -2,6 +2,8 @@
 
 Multi-niche directory business factory. 16 niches, 7 AI agents, 9 n8n workflows, 12 AiTable tables, operations dashboard.
 
+**→ Production:** Step-by-step guide to go live: **[`docs/PRODUCTION_READINESS_RUNBOOK.md`](docs/PRODUCTION_READINESS_RUNBOOK.md)** (also see [`GO_LIVE_CHECKLIST.md`](GO_LIVE_CHECKLIST.md)).
+
 ## Architecture
 
 ```mermaid
