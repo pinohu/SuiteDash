@@ -30,7 +30,7 @@ Run `(Get-ChildItem -Recurse -File).Count` from the project root for an exact to
 
 ## Known issues / notes
 
-1. **AiTable query params** in n8n still use Airtable-style `filterByFormula` in some nodes; AiTable Fusion filtering may differ — validate in n8n against your space.
+1. **AiTable `filterByFormula`** — Fusion supports it ([Get Records](https://developers.aitable.ai/api/get-records)); n8n HTTP nodes now build URLs with `encodeURIComponent(...)` plus `pageSize` to avoid broken query strings. Re-validate complex formulas (`BLANK()`, date fields) against your datasheet field names.
 2. **Root `.env`:** Dashboard server loads `../.env` from `dashboard/`; copy `env/.env` → `.env` at repo root if needed.
 3. **QA Audit button** calls `POST /api/run-qa-audit` → `{N8N_WEBHOOK_BASE}/qa-audit-manual`; requires `N8N_WEBHOOK_BASE` in `.env` and a reachable n8n instance.
 4. **`npm audit`** — root `package.json` no longer pulls Next/React as unused devDependencies; run `npm audit` periodically on production deps.

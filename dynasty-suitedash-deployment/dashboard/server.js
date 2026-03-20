@@ -10,6 +10,27 @@ app.use(cors())
 app.use(express.json())
 app.use(express.static(path.join(__dirname)))
 
+app.get('/api/health', (req, res) => {
+  const checks = {
+    aitableApiKey: Boolean(String(process.env.AITABLE_API_KEY || '').trim()),
+    tables: {
+      analytics: Boolean(process.env.AITABLE_ANALYTICS_TABLE),
+      systemConfig: Boolean(process.env.AITABLE_SYSTEM_CONFIG_TABLE),
+      dlq: Boolean(process.env.AITABLE_DLQ_TABLE),
+      auditLog: Boolean(process.env.AITABLE_AUDIT_LOG_TABLE)
+    },
+    n8nWebhook: Boolean(String(process.env.N8N_WEBHOOK_BASE || '').trim())
+  }
+  const liveCapable =
+    checks.aitableApiKey && checks.tables.analytics && checks.tables.systemConfig
+  res.json({
+    ok: true,
+    mode: liveCapable ? 'live' : 'degraded',
+    checks,
+    time: new Date().toISOString()
+  })
+})
+
 const AITABLE = 'https://aitable.ai/fusion/v1/datasheets'
 const key = process.env.AITABLE_API_KEY
 

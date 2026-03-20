@@ -35,8 +35,9 @@ Workspace root **`AGENTS.md`**, **`.cursor/rules/*.mdc`**, and **`docs/CURSOR_OP
 3. Copy `env/.env.example` to `.env` at the project root and fill from your vault (or keep using `env/.env`)  
 4. `cd dashboard && npm install && cd ..`  
 5. Run tests: `npm test`  
-6. Start dashboard: `npm run dashboard:dev` (serves static UI + API proxy on port 3000)  
-7. Preflight dashboard deps + syntax: `npm run dashboard:build`
+6. Strict integration gate (CI): `npm run test:api:strict` — requires Tier A env vars; fails on any dead integration.  
+7. Start dashboard: `npm run dashboard:dev` (serves static UI + API proxy on port 3000; **`GET /api/health`** for env readiness)  
+8. Preflight dashboard deps + syntax: `npm run dashboard:build`
 
 ## File Structure
 

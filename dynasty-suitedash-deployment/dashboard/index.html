@@ -50,10 +50,21 @@
     .toggle-btn.paused { background: #b91c1c; color: white; }
     .qa-btn { background: #0ea5e9; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; }
     .qa-btn:hover { background: #0284c7; }
+    .toast { position: fixed; bottom: 24px; right: 24px; background: #1e293b; border: 1px solid #475569; padding: 14px 20px; border-radius: 10px; font-size: 14px; max-width: 380px; box-shadow: 0 10px 40px rgba(0,0,0,0.45); z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
+    .toast.show { opacity: 1; pointer-events: auto; }
+    .toast.error { border-color: #ef4444; color: #fecaca; }
+    .env-banner { padding: 10px 32px; font-size: 13px; border-bottom: 1px solid #334155; display: none; line-height: 1.4; }
+    .env-banner.visible { display: block; }
+    .env-banner.live { background: #14532d; color: #bbf7d0; }
+    .env-banner.degraded { background: #713f12; color: #fef08a; }
+    .header-meta { font-size: 12px; color: #94a3b8; white-space: nowrap; }
+    .refresh-btn:disabled { opacity: 0.55; cursor: wait; }
     @media (max-width: 768px) { .charts { grid-template-columns: 1fr; } .grid { grid-template-columns: repeat(2, 1fr); } }
   </style>
 </head>
 <body>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="envBanner" class="env-banner" role="region" aria-label="Environment status"></div>
   <div class="header">
     <h1><span>Dynasty</span> Empire — Operations Dashboard</h1>
     <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
@@ -63,7 +74,8 @@
       </div>
       <button type="button" class="toggle-btn active" id="emergencyToggle" onclick="toggleEmergencyStop()" title="Pause or resume automation">Emergency: Active</button>
       <button type="button" class="qa-btn" id="qaAuditBtn" onclick="runQaAudit()">Run QA Audit</button>
-      <button class="refresh-btn" type="button" onclick="loadData()">Refresh</button>
+      <span class="header-meta" id="lastRefresh" title="Last data refresh"></span>
+      <button class="refresh-btn" type="button" id="refreshBtn" onclick="loadData()">Refresh</button>
     </div>
   </div>
 
@@ -190,7 +202,39 @@
       }
     }
 
+    let toastTimer = null;
+    function showToast(message, isError) {
+      const el = document.getElementById('toast');
+      el.textContent = message;
+      el.classList.remove('error');
+      if (isError) el.classList.add('error');
+      el.classList.add('show');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove('show'), isError ? 7000 : 4500);
+    }
+
+    async function applyHealthBanner() {
+      const h = await fetchJsonSafe('/api/health');
+      const banner = document.getElementById('envBanner');
+      if (!h || !h.checks) {
+        banner.className = 'env-banner visible degraded';
+        banner.textContent = 'Could not read /api/health — is the dashboard server running?';
+        return;
+      }
+      if (h.mode === 'live') {
+        banner.className = 'env-banner visible live';
+        banner.textContent = 'Live mode: AiTable keys and dashboard table IDs are set. KPIs use proxy data when available.';
+      } else {
+        banner.className = 'env-banner visible degraded';
+        banner.textContent = 'Degraded: set AITABLE_API_KEY and AITABLE_*_TABLE IDs in root .env (see docs/CREDENTIALS_INVENTORY.md). Charts may show demo data.';
+      }
+    }
+
     async function loadData() {
+      const refreshBtn = document.getElementById('refreshBtn');
+      refreshBtn.disabled = true;
+      try {
+      await applyHealthBanner();
       const [analyticsJson, systemJson, dlqJson] = await Promise.all([
         fetchJsonSafe('/api/analytics'),
         fetchJsonSafe('/api/system-status'),
@@ -326,6 +370,14 @@
       alertsList.innerHTML = data.alerts.map(a => `
         <div class="alert-item ${a.type}"><span class="text">${a.text}</span><span class="time">${a.time}</span></div>
       `).join('');
+
+      const lr = document.getElementById('lastRefresh');
+      if (lr) lr.textContent = 'Updated ' + new Date().toLocaleTimeString();
+      } catch (err) {
+        showToast('Load failed: ' + (err && err.message ? err.message : String(err)), true);
+      } finally {
+        refreshBtn.disabled = false;
+      }
     }
 
     function applySystemUi(isActive) {
@@ -363,8 +415,9 @@
         const j = await r.json();
         if (!r.ok) throw new Error(j.error || 'Request failed');
         applySystemUi(action === 'resume');
+        showToast(action === 'pause' ? 'Automation paused.' : 'Automation resumed.');
       } catch (e) {
-        alert('Emergency stop API failed: ' + e.message);
+        showToast('Emergency stop failed: ' + e.message, true);
       }
     }
 
@@ -375,9 +428,9 @@
         const r = await fetch('/api/run-qa-audit', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
         const j = await r.json();
         if (!r.ok) throw new Error(j.error || 'Webhook failed');
-        alert('QA audit triggered. Check n8n execution and audit log.');
+        showToast('QA audit webhook called. Check n8n execution and audit log.');
       } catch (e) {
-        alert('QA audit: ' + e.message);
+        showToast('QA audit: ' + e.message, true);
       } finally {
         b.disabled = false;
       }

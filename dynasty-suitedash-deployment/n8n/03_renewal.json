@@ -21,7 +21,7 @@
     },
     {
       "parameters": {
-        "url": "=https://aitable.ai/fusion/v1/datasheets/{{$env.AITABLE_SYSTEM_CONFIG_TABLE}}/records?filterByFormula={config_key}='system_active'",
+        "url": "={{ 'https://aitable.ai/fusion/v1/datasheets/' + $env.AITABLE_SYSTEM_CONFIG_TABLE + '/records?pageSize=50&filterByFormula=' + encodeURIComponent(\"{config_key}='system_active'\") }}",
         "authentication": "none",
         "options": {
           "timeout": 10000
@@ -74,7 +74,7 @@
     },
     {
       "parameters": {
-        "url": "=https://aitable.ai/fusion/v1/datasheets/{{$env.AITABLE_CLIENTS_TABLE}}/records?filterByFormula=AND({lifecycle_stage}='active',{renewal_date}<='{{$json.renewal_window_date}}')",
+        "url": "={{ 'https://aitable.ai/fusion/v1/datasheets/' + $env.AITABLE_CLIENTS_TABLE + '/records?pageSize=200&filterByFormula=' + encodeURIComponent(\"AND({lifecycle_stage}='active',{renewal_date}<='\" + $json.renewal_window_date + \"')\") }}",
         "authentication": "none",
         "sendHeaders": true,
         "headerParameters": {

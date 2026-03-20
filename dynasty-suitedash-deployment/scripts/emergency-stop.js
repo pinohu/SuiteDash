@@ -9,11 +9,14 @@
  *   node scripts/emergency-stop.js status
  */
 
-require('dotenv').config({ path: './env/.env' });
+const path = require('path');
+const root = path.join(__dirname, '..');
+require('dotenv').config({ path: path.join(root, '.env') });
+require('dotenv').config({ path: path.join(root, 'env', '.env') });
 const axios = require('axios');
 
 const API_KEY = process.env.AITABLE_API_KEY;
-const BASE_URL = process.env.AITABLE_BASE_URL;
+const BASE_URL = (process.env.AITABLE_BASE_URL || '').replace(/\/$/, '');
 const TABLE = process.env.AITABLE_SYSTEM_CONFIG_TABLE;
 const RECORD_ID = process.env.AITABLE_SYSTEM_ACTIVE_RECORD;
 
@@ -22,8 +25,18 @@ const headers = {
   'Content-Type': 'application/json'
 };
 
+function datasheetRecordsUrl() {
+  if (!BASE_URL || !TABLE) return null;
+  return `${BASE_URL}/${TABLE}`;
+}
+
 async function getStatus() {
-  const res = await axios.get(`${BASE_URL}/${TABLE}?filterByFormula={config_key}='system_active'`, { headers });
+  const url = datasheetRecordsUrl();
+  if (!url) throw new Error('AITABLE_BASE_URL and AITABLE_SYSTEM_CONFIG_TABLE required');
+  const res = await axios.get(url, {
+    headers,
+    params: { filterByFormula: "{config_key}='system_active'", pageSize: 20 }
+  });
   const record = res.data?.data?.records?.[0];
   return {
     active: record?.fields?.value === 'true',
@@ -34,8 +47,12 @@ async function getStatus() {
 }
 
 async function updateConfig(key, value, updatedBy, notes) {
-  // Get record ID first
-  const res = await axios.get(`${BASE_URL}/${TABLE}?filterByFormula={config_key}='${key}'`, { headers });
+  const url = datasheetRecordsUrl();
+  if (!url) throw new Error('AiTable URL not configured');
+  const res = await axios.get(url, {
+    headers,
+    params: { filterByFormula: `{config_key}='${key.replace(/'/g, "\\'")}'`, pageSize: 20 }
+  });
   const recordId = res.data?.data?.records?.[0]?.recordId;
 
   if (!recordId) {
@@ -64,8 +81,8 @@ async function main() {
   console.log('  Dynasty Empire — Emergency Stop');
   console.log('═══════════════════════════════════\n');
 
-  if (!API_KEY || !TABLE) {
-    console.error('ERROR: AiTable credentials not configured in .env');
+  if (!API_KEY || !TABLE || !BASE_URL) {
+    console.error('ERROR: AiTable not configured (need AITABLE_API_KEY, AITABLE_BASE_URL, AITABLE_SYSTEM_CONFIG_TABLE in .env)');
     process.exit(1);
   }
 

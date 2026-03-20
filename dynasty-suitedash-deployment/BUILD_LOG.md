@@ -87,3 +87,4 @@ Synced with **`BUILD_COMPLETE.md`**, **`docs/LAST_AUTOMATION_RUN.md`**, and repo
 |------|------|
 | 2026-03-20 | Log reconciled with `BUILD_COMPLETE` / `LAST_AUTOMATION_RUN`; removed stale “Pending” placeholders. |
 | 2026-03-20 | `dashboard:build` aligned with Express dashboard; unused Next/React devDependencies removed from root `package.json`. |
+| 2026-03-20 | `test-connections.js`: Tier A env preflight, `--strict`, optional TLS bypass for n8n debug; n8n AiTable URLs use `encodeURIComponent`; `emergency-stop.js` uses axios `params`; dashboard `/api/health`, env banner, toasts. |

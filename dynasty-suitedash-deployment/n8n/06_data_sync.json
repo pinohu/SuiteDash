@@ -21,7 +21,7 @@
     },
     {
       "parameters": {
-        "url": "=https://aitable.ai/fusion/v1/datasheets/{{$env.AITABLE_SYSTEM_CONFIG_TABLE}}/records?filterByFormula={config_key}='system_active'",
+        "url": "={{ 'https://aitable.ai/fusion/v1/datasheets/' + $env.AITABLE_SYSTEM_CONFIG_TABLE + '/records?pageSize=50&filterByFormula=' + encodeURIComponent(\"{config_key}='system_active'\") }}",
         "authentication": "none",
         "sendHeaders": true,
         "headerParameters": {

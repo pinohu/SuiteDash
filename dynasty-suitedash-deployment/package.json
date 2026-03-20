@@ -15,6 +15,7 @@
     "test": "node tests/test-workflows.js && node tests/test-niche-configs.js",
     "test:agents": "node tests/test-agents.js",
     "test:api": "node tests/test-connections.js",
+    "test:api:strict": "node tests/test-connections.js --strict",
     "test:all": "npm test && npm run test:agents",
     "test:webhook": "node scripts/test-webhook.js",
     "emergency:stop": "node scripts/emergency-stop.js pause",

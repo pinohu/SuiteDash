@@ -36,9 +36,14 @@ node --check dashboard/server.js
 ```
 
 ```bash
-# Live connectivity (informational / integration)
+# Live connectivity (informational; always exit 0)
 npm run test:api
+
+# CI / go-live gate: exit 1 if any check fails or Tier A env incomplete
+npm run test:api:strict
 ```
+
+Optional: `TEST_ALLOW_INSECURE_TLS=1` or `node tests/test-connections.js --insecure-tls` for temporary n8n TLS debugging only.
 
 **Go-live bar:** All **Tier A** services you actually use in production must pass or be explicitly **out of scope** for the first client (document that in Part D).
 

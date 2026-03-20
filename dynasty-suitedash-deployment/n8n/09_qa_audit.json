@@ -35,7 +35,7 @@
     },
     {
       "parameters": {
-        "url": "=https://aitable.ai/fusion/v1/datasheets/{{$env.AITABLE_SYSTEM_CONFIG_TABLE}}/records?filterByFormula={config_key}='system_active'",
+        "url": "={{ 'https://aitable.ai/fusion/v1/datasheets/' + $env.AITABLE_SYSTEM_CONFIG_TABLE + '/records?pageSize=50&filterByFormula=' + encodeURIComponent(\"{config_key}='system_active'\") }}",
         "authentication": "none",
         "sendHeaders": true,
         "headerParameters": {
@@ -123,7 +123,7 @@
     },
     {
       "parameters": {
-        "url": "=https://aitable.ai/fusion/v1/datasheets/{{$env.AITABLE_ENGAGEMENT_TABLE}}/records?filterByFormula=AND({calculated_score}='',{risk_level}='active')",
+        "url": "={{ 'https://aitable.ai/fusion/v1/datasheets/' + $env.AITABLE_ENGAGEMENT_TABLE + '/records?pageSize=100&filterByFormula=' + encodeURIComponent(\"AND({calculated_score}='',{risk_level}='active')\") }}",
         "authentication": "none",
         "sendHeaders": true,
         "headerParameters": {
@@ -144,7 +144,7 @@
     },
     {
       "parameters": {
-        "url": "=https://aitable.ai/fusion/v1/datasheets/{{$env.AITABLE_DLQ_TABLE}}/records?filterByFormula=AND({status}!='resolved',DATETIME_DIFF(NOW(),{first_failure},'hours')>72)",
+        "url": "={{ 'https://aitable.ai/fusion/v1/datasheets/' + $env.AITABLE_DLQ_TABLE + '/records?pageSize=100&filterByFormula=' + encodeURIComponent(\"AND({status}!='resolved',DATETIME_DIFF(NOW(),{first_failure},'hours')>72)\") }}",
         "authentication": "none",
         "sendHeaders": true,
         "headerParameters": {
@@ -165,7 +165,7 @@
     },
     {
       "parameters": {
-        "url": "=https://aitable.ai/fusion/v1/datasheets/{{$env.AITABLE_WORKFLOW_STATE_TABLE}}/records?filterByFormula=AND({status}='active',DATETIME_DIFF(NOW(),{last_step_at},'days')>14)",
+        "url": "={{ 'https://aitable.ai/fusion/v1/datasheets/' + $env.AITABLE_WORKFLOW_STATE_TABLE + '/records?pageSize=100&filterByFormula=' + encodeURIComponent(\"AND({status}='active',DATETIME_DIFF(NOW(),{last_step_at},'days')>14)\") }}",
         "authentication": "none",
         "sendHeaders": true,
         "headerParameters": {
@@ -186,7 +186,7 @@
     },
     {
       "parameters": {
-        "url": "=https://aitable.ai/fusion/v1/datasheets/{{$env.AITABLE_SYSTEM_CONFIG_TABLE}}/records?filterByFormula={config_key}='api_calls_this_month'",
+        "url": "={{ 'https://aitable.ai/fusion/v1/datasheets/' + $env.AITABLE_SYSTEM_CONFIG_TABLE + '/records?pageSize=50&filterByFormula=' + encodeURIComponent(\"{config_key}='api_calls_this_month'\") }}",
         "authentication": "none",
         "sendHeaders": true,
         "headerParameters": {
