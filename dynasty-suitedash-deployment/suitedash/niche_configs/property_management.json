@@ -1,0 +1,75 @@
+{
+  "niche_id": "property_management",
+  "display_name": "Property Management",
+  "pack_number": 6,
+  "offer_structure": {
+    "setup_fee": 397,
+    "basic_monthly": 147,
+    "premium_monthly": 347,
+    "upsells": [
+      {"name": "Tenant Screening Integration", "price": 197, "billing": "monthly"},
+      {"name": "Maintenance Dispatch", "price": 247, "billing": "monthly"}
+    ]
+  },
+  "custom_fields": [
+    {"name": "Property Types", "type": "multi_select", "options": ["Single Family", "Multi-Family", "Commercial", "HOA", "Vacation/Short-Term"]},
+    {"name": "Units Under Management", "type": "dropdown", "options": ["1-10", "11-50", "51-200", "200+"]},
+    {"name": "License Number", "type": "text"},
+    {"name": "Services Offered", "type": "multi_select", "options": ["Tenant Placement", "Maintenance", "Accounting", "Eviction", "Marketing"]},
+    {"name": "Management Fee Structure", "type": "dropdown", "options": ["Flat Fee", "% of Rent", "Hybrid"]},
+    {"name": "Software Used", "type": "multi_select", "options": ["AppFolio", "Buildium", "Rent Manager", "Other"]}
+  ],
+  "sales_pipeline": {
+    "name": "Property Management Lead Acquisition",
+    "stages": [
+      {"name": "Lead"},
+      {"name": "Contacted"},
+      {"name": "Property Assessment"},
+      {"name": "Proposal"},
+      {"name": "Won"},
+      {"name": "Lost"}
+    ]
+  },
+  "service_pipeline": {
+    "name": "Property Management Service Delivery",
+    "stages": [
+      {"name": "Onboarding"},
+      {"name": "Portfolio Setup"},
+      {"name": "Active Management"},
+      {"name": "Review"},
+      {"name": "Annual Partner"}
+    ]
+  },
+  "circles": ["Property Management-Free", "Property Management-Basic", "Property Management-Premium", "Property Management-Churned", "Property Management-VIP"],
+  "kickoff_form": {
+    "name": "Property Management Company Registration",
+    "role_assignment": "Lead",
+    "fields": [
+      {"name": "Company Name", "type": "text", "required": true},
+      {"name": "Contact Name", "type": "text", "required": true},
+      {"name": "Email", "type": "email", "required": true},
+      {"name": "Phone", "type": "phone", "required": true},
+      {"name": "Property Types Managed", "type": "multi_select"},
+      {"name": "Total Units Under Management", "type": "dropdown"},
+      {"name": "Service Area", "type": "text"},
+      {"name": "Management Fee Structure", "type": "dropdown"}
+    ],
+    "automations": ["Add to Property Management-Free Circle", "Apply Folder Generator", "Assign Onboarding FLOW", "Fire n8n webhook"]
+  },
+  "project_template": {
+    "name": "Property Management Onboarding",
+    "tasks": [
+      {"name": "License & Insurance Verification", "assigned_to": "Staff", "duration_days": 2},
+      {"name": "Portfolio & Property Type Setup", "assigned_to": "Staff", "duration_days": 3},
+      {"name": "Property Photo Gallery", "assigned_to": "Client", "duration_days": 5},
+      {"name": "Portal Training", "assigned_to": "Staff", "duration_days": 1},
+      {"name": "Go-Live", "assigned_to": "Staff", "duration_days": 1}
+    ]
+  },
+  "email_angles": [
+    "Day 0: Welcome to Property Management Directory",
+    "Day 1: Showcase your portfolio - attract property owners",
+    "Day 3: Maintenance dispatch automation saves landlords time",
+    "Day 7: How local PM company landed 8 properties from listing"
+  ]
+}

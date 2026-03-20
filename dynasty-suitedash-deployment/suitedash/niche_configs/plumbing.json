@@ -1,0 +1,76 @@
+{
+  "niche_id": "plumbing",
+  "display_name": "Plumbing Services",
+  "pack_number": 1,
+  "offer_structure": {
+    "setup_fee": 297,
+    "basic_monthly": 97,
+    "premium_monthly": 297,
+    "upsells": [
+      {"name": "Lead Generation", "price": 197, "billing": "monthly"},
+      {"name": "Website Build", "price": 497, "billing": "one-time"},
+      {"name": "Automation Pack", "price": 197, "billing": "monthly"}
+    ]
+  },
+  "custom_fields": [
+    {"name": "Service Specialties", "type": "multi_select", "options": ["Residential", "Commercial", "Emergency", "Drain Cleaning", "Water Heater", "Repiping", "Gas Lines"]},
+    {"name": "License Number", "type": "text"},
+    {"name": "Service Radius", "type": "dropdown", "options": ["10mi", "25mi", "50mi", "Statewide"]},
+    {"name": "Emergency Available", "type": "checkbox"},
+    {"name": "Insurance Verified", "type": "checkbox"},
+    {"name": "Average Job Size", "type": "dropdown", "options": ["Under $500", "$500-$2K", "$2K-$10K", "$10K+"]}
+  ],
+  "sales_pipeline": {
+    "name": "Plumbing Lead Acquisition",
+    "stages": [
+      {"name": "Lead Captured", "probability": 10, "auto_action": "Auto-assign coordinator"},
+      {"name": "Contacted", "probability": 25, "auto_action": "Send service overview email"},
+      {"name": "Demo Booked", "probability": 50, "auto_action": "Schedule portal walkthrough"},
+      {"name": "Proposal Sent", "probability": 65, "auto_action": "Start follow-up sequence"},
+      {"name": "Won", "probability": 100, "auto_action": "Trigger onboarding FLOW"},
+      {"name": "Lost", "probability": 0, "auto_action": "Trigger win-back at Day 7"}
+    ]
+  },
+  "service_pipeline": {
+    "name": "Plumbing Service Delivery",
+    "stages": [
+      {"name": "Onboarding", "action": "Profile setup + license verification"},
+      {"name": "Portal Setup", "action": "Listing configuration + photo upload"},
+      {"name": "Active", "action": "Receiving leads, listed in directory"},
+      {"name": "Review", "action": "Quarterly performance review"},
+      {"name": "Retainer", "action": "Annual contract, premium support"}
+    ]
+  },
+  "circles": ["Plumbing-Free", "Plumbing-Basic", "Plumbing-Premium", "Plumbing-Churned", "Plumbing-VIP"],
+  "kickoff_form": {
+    "name": "Plumbing Business Registration",
+    "role_assignment": "Lead",
+    "fields": [
+      {"name": "Business Name", "type": "text", "required": true},
+      {"name": "Owner Name", "type": "text", "required": true},
+      {"name": "Email", "type": "email", "required": true},
+      {"name": "Phone", "type": "phone", "required": true},
+      {"name": "Service Specialties", "type": "multi_select", "options": ["Residential", "Commercial", "Emergency", "Drain Cleaning", "Water Heater", "Repiping", "Gas Lines"]},
+      {"name": "Service Area (ZIP Codes)", "type": "text"},
+      {"name": "Years in Business", "type": "number"},
+      {"name": "How Did You Find Us", "type": "dropdown", "options": ["Google", "Referral", "Social Media", "Trade Association", "Other"]}
+    ],
+    "automations": ["Add to Plumbing-Free Circle", "Apply Folder Generator", "Assign Onboarding FLOW", "Fire n8n webhook"]
+  },
+  "project_template": {
+    "name": "Plumbing Onboarding",
+    "tasks": [
+      {"name": "License & Insurance Verification", "assigned_to": "Staff", "duration_days": 2},
+      {"name": "Profile & Listing Setup", "assigned_to": "Client + Staff", "duration_days": 3},
+      {"name": "Photo Upload & Optimization", "assigned_to": "Client", "duration_days": 5},
+      {"name": "Portal Training Walkthrough", "assigned_to": "Staff", "duration_days": 1},
+      {"name": "Go-Live & First Lead Test", "assigned_to": "Staff", "duration_days": 1}
+    ]
+  },
+  "email_angles": [
+    "Day 0: Welcome to [Directory] — plumbers in [Area] are getting X leads/month",
+    "Day 1: Complete your profile — plumbers with photos get 3x more calls",
+    "Day 3: 5 ways to rank higher in local plumbing searches",
+    "Day 7: How [Plumber Name] closed $12K from directory leads last month"
+  ]
+}

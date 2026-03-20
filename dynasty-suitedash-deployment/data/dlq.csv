@@ -1,0 +1,3 @@
+record_id,workflow_name,node_name,error_type,error_message,contact_id,payload_summary,retry_count,max_retries,first_failure,last_retry,status,resolved_at,resolved_by,resolution_notes
+rec_dlq_001,Dynasty - Pack 3 Renewal,HTTP Request,ETIMEDOUT,Upstream timeout calling SuiteDash API,cli_plumb_001,renewal batch slice 2,3,3,2026-03-16T02:10:00Z,2026-03-16T02:45:00Z,needs_manual_review,,,
+rec_dlq_002,Dynasty - Data Sync,Code,TypeError,cannot read properties of undefined,,"sync drift check",1,3,2026-03-17T04:00:00Z,,retrying,,,

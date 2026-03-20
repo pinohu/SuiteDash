@@ -1,0 +1,76 @@
+{
+  "niche_id": "fitness_coaches",
+  "display_name": "Fitness Coaches",
+  "pack_number": 14,
+  "offer_structure": {
+    "setup_fee": 197,
+    "basic_monthly": 67,
+    "premium_monthly": 197,
+    "upsells": [
+      {"name": "Lead Generation", "price": 147, "billing": "monthly"},
+      {"name": "Booking Automation", "price": 97, "billing": "monthly"},
+      {"name": "Content Repurposing", "price": 147, "billing": "monthly"}
+    ]
+  },
+  "custom_fields": [
+    {"name": "Modality", "type": "multi_select", "options": ["Personal Training", "Group Fitness", "Yoga", "Pilates", "CrossFit", "Nutrition Coaching", "Sports Performance"]},
+    {"name": "Certifications", "type": "multi_select", "options": ["NASM", "ACE", "ISSA", "NSCA", "CSCS", "RYT-200", "Precision Nutrition"]},
+    {"name": "Training Format", "type": "dropdown", "options": ["In-Person", "Online", "Both"]},
+    {"name": "Specializations", "type": "multi_select", "options": ["Weight Loss", "Muscle Building", "Rehab/Injury Recovery", "Pre/Post-Natal", "Senior Fitness", "Youth"]},
+    {"name": "Experience Level", "type": "dropdown", "options": ["1-3 years", "3-5 years", "5-10 years", "10+ years"]},
+    {"name": "Virtual Available", "type": "checkbox"}
+  ],
+  "sales_pipeline": {
+    "name": "Fitness Coaches Lead Acquisition",
+    "stages": [
+      {"name": "Lead"},
+      {"name": "Contacted"},
+      {"name": "Free Consultation"},
+      {"name": "Proposal"},
+      {"name": "Won"},
+      {"name": "Lost"}
+    ]
+  },
+  "service_pipeline": {
+    "name": "Fitness Coaches Service Delivery",
+    "stages": [
+      {"name": "Onboarding"},
+      {"name": "Credential Check"},
+      {"name": "Active Listing"},
+      {"name": "Featured Coach"},
+      {"name": "Premium Partner"}
+    ]
+  },
+  "circles": ["Fitness Coaches-Free", "Fitness Coaches-Basic", "Fitness Coaches-Premium", "Fitness Coaches-Churned", "Fitness Coaches-VIP"],
+  "kickoff_form": {
+    "name": "Fitness Coach Registration",
+    "role_assignment": "Lead",
+    "fields": [
+      {"name": "Name/Business Name", "type": "text", "required": true},
+      {"name": "Email", "type": "email", "required": true},
+      {"name": "Phone", "type": "phone", "required": true},
+      {"name": "Modality", "type": "multi_select"},
+      {"name": "Certifications", "type": "multi_select"},
+      {"name": "Training Format", "type": "dropdown"},
+      {"name": "Specializations", "type": "multi_select"},
+      {"name": "Location/Service Area", "type": "text"}
+    ],
+    "automations": ["Add to Fitness Coaches-Free Circle", "Apply Folder Generator", "Assign Onboarding FLOW", "Fire n8n webhook"]
+  },
+  "project_template": {
+    "name": "Fitness Coach Onboarding",
+    "tasks": [
+      {"name": "Certification Verification", "assigned_to": "Staff", "duration_days": 2},
+      {"name": "Profile & Transformation Gallery", "assigned_to": "Staff", "duration_days": 3},
+      {"name": "Video Introduction Upload", "assigned_to": "Client", "duration_days": 5},
+      {"name": "Portal Training", "assigned_to": "Staff", "duration_days": 1},
+      {"name": "Go-Live", "assigned_to": "Staff", "duration_days": 1}
+    ]
+  },
+  "email_angles": [
+    "Day 0: Welcome to Fitness Coaches Directory",
+    "Day 1: Specialization attracts ideal clients",
+    "Day 3: Transformation stories - showcase your results",
+    "Day 7: How fitness coach booked 8 clients in first month"
+  ]
+}

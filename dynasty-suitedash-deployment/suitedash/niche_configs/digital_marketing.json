@@ -1,0 +1,76 @@
+{
+  "niche_id": "digital_marketing",
+  "display_name": "Digital Marketing Agencies",
+  "pack_number": 15,
+  "offer_structure": {
+    "setup_fee": 497,
+    "basic_monthly": 197,
+    "premium_monthly": 497,
+    "upsells": [
+      {"name": "Lead Generation", "price": 297, "billing": "monthly"},
+      {"name": "White-Label Client Portal", "price": 497, "billing": "one-time"},
+      {"name": "Case Study Production", "price": 247, "billing": "one-time"}
+    ]
+  },
+  "custom_fields": [
+    {"name": "Services", "type": "multi_select", "options": ["SEO", "PPC", "Social Media", "Content Marketing", "Email Marketing", "Web Design", "Branding", "Video"]},
+    {"name": "Industries Served", "type": "multi_select", "options": ["E-commerce", "SaaS", "Healthcare", "Real Estate", "Legal", "Local Business"]},
+    {"name": "Team Size", "type": "dropdown", "options": ["Solo", "2-5", "6-15", "15-50", "50+"]},
+    {"name": "Minimum Retainer", "type": "dropdown", "options": ["Under $1K", "$1K-$3K", "$3K-$10K", "$10K+"]},
+    {"name": "Google Partner", "type": "checkbox"},
+    {"name": "Case Studies Available", "type": "number"}
+  ],
+  "sales_pipeline": {
+    "name": "Digital Marketing Lead Acquisition",
+    "stages": [
+      {"name": "Lead"},
+      {"name": "Contacted"},
+      {"name": "Portfolio Review"},
+      {"name": "Proposal"},
+      {"name": "Won"},
+      {"name": "Lost"}
+    ]
+  },
+  "service_pipeline": {
+    "name": "Digital Marketing Service Delivery",
+    "stages": [
+      {"name": "Onboarding"},
+      {"name": "Portfolio Setup"},
+      {"name": "Active Listing"},
+      {"name": "Verified Agency"},
+      {"name": "Agency Partner"}
+    ]
+  },
+  "circles": ["Digital Marketing-Free", "Digital Marketing-Basic", "Digital Marketing-Premium", "Digital Marketing-Churned", "Digital Marketing-VIP"],
+  "kickoff_form": {
+    "name": "Digital Marketing Agency Registration",
+    "role_assignment": "Lead",
+    "fields": [
+      {"name": "Agency Name", "type": "text", "required": true},
+      {"name": "Contact Name", "type": "text", "required": true},
+      {"name": "Email", "type": "email", "required": true},
+      {"name": "Phone", "type": "phone", "required": true},
+      {"name": "Services Offered", "type": "multi_select"},
+      {"name": "Industries Served", "type": "multi_select"},
+      {"name": "Team Size", "type": "dropdown"},
+      {"name": "Portfolio/Website URL", "type": "url"}
+    ],
+    "automations": ["Add to Digital Marketing-Free Circle", "Apply Folder Generator", "Assign Onboarding FLOW", "Fire n8n webhook"]
+  },
+  "project_template": {
+    "name": "Digital Marketing Agency Onboarding",
+    "tasks": [
+      {"name": "Portfolio & Credential Review", "assigned_to": "Staff", "duration_days": 3},
+      {"name": "Profile & Case Study Setup", "assigned_to": "Staff", "duration_days": 3},
+      {"name": "Client Testimonial Collection", "assigned_to": "Client", "duration_days": 7},
+      {"name": "Portal Training", "assigned_to": "Staff", "duration_days": 1},
+      {"name": "Go-Live", "assigned_to": "Staff", "duration_days": 1}
+    ]
+  },
+  "email_angles": [
+    "Day 0: Welcome to Digital Marketing Directory",
+    "Day 1: Portfolio showcase - demonstrate your results",
+    "Day 3: Case studies build authority and trust",
+    "Day 7: How digital agency landed 3 enterprise clients from directory"
+  ]
+}

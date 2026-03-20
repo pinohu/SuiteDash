@@ -1,0 +1,76 @@
+{
+  "niche_id": "home_cleaning",
+  "display_name": "Home Cleaning Services",
+  "pack_number": 10,
+  "offer_structure": {
+    "setup_fee": 197,
+    "basic_monthly": 67,
+    "premium_monthly": 197,
+    "upsells": [
+      {"name": "Lead Generation", "price": 147, "billing": "monthly"},
+      {"name": "Booking Automation", "price": 97, "billing": "monthly"},
+      {"name": "Review Management", "price": 67, "billing": "monthly"}
+    ]
+  },
+  "custom_fields": [
+    {"name": "Service Types", "type": "multi_select", "options": ["Regular Cleaning", "Deep Cleaning", "Move-In/Out", "Post-Construction", "Commercial", "Green/Eco"]},
+    {"name": "Insurance Verified", "type": "checkbox"},
+    {"name": "Team Size", "type": "dropdown", "options": ["Solo", "2-5", "6-10", "10+"]},
+    {"name": "Service Radius", "type": "dropdown", "options": ["10mi", "25mi", "50mi"]},
+    {"name": "Supplies Provided", "type": "checkbox"},
+    {"name": "Background Checked", "type": "checkbox"}
+  ],
+  "sales_pipeline": {
+    "name": "Home Cleaning Lead Acquisition",
+    "stages": [
+      {"name": "Lead"},
+      {"name": "Contacted"},
+      {"name": "Estimate Scheduled"},
+      {"name": "Proposal"},
+      {"name": "Won"},
+      {"name": "Lost"}
+    ]
+  },
+  "service_pipeline": {
+    "name": "Home Cleaning Service Delivery",
+    "stages": [
+      {"name": "Onboarding"},
+      {"name": "Verification"},
+      {"name": "Active Listing"},
+      {"name": "Featured Cleaner"},
+      {"name": "Annual Partner"}
+    ]
+  },
+  "circles": ["Home Cleaning-Free", "Home Cleaning-Basic", "Home Cleaning-Premium", "Home Cleaning-Churned", "Home Cleaning-VIP"],
+  "kickoff_form": {
+    "name": "Home Cleaning Business Registration",
+    "role_assignment": "Lead",
+    "fields": [
+      {"name": "Business Name", "type": "text", "required": true},
+      {"name": "Contact Name", "type": "text", "required": true},
+      {"name": "Email", "type": "email", "required": true},
+      {"name": "Phone", "type": "phone", "required": true},
+      {"name": "Service Types", "type": "multi_select"},
+      {"name": "Service Area (ZIP Codes)", "type": "text"},
+      {"name": "Team Size", "type": "dropdown"},
+      {"name": "Insurance & Bonding", "type": "checkbox"}
+    ],
+    "automations": ["Add to Home Cleaning-Free Circle", "Apply Folder Generator", "Assign Onboarding FLOW", "Fire n8n webhook"]
+  },
+  "project_template": {
+    "name": "Home Cleaning Onboarding",
+    "tasks": [
+      {"name": "Insurance & Background Verification", "assigned_to": "Staff", "duration_days": 2},
+      {"name": "Profile & Service Setup", "assigned_to": "Staff", "duration_days": 2},
+      {"name": "Photo Gallery (clean results)", "assigned_to": "Client", "duration_days": 5},
+      {"name": "Portal Training", "assigned_to": "Staff", "duration_days": 1},
+      {"name": "Go-Live", "assigned_to": "Staff", "duration_days": 1}
+    ]
+  },
+  "email_angles": [
+    "Day 0: Welcome to Home Cleaning Directory",
+    "Day 1: Background verification boosts homeowner confidence",
+    "Day 3: Before/after photos - showcase your best work",
+    "Day 7: How local cleaner booked 20 recurring clients in 30 days"
+  ]
+}

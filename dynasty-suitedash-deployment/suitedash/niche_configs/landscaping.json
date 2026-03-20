@@ -1,0 +1,75 @@
+{
+  "niche_id": "landscaping",
+  "display_name": "Landscaping Services",
+  "pack_number": 11,
+  "offer_structure": {
+    "setup_fee": 247,
+    "basic_monthly": 97,
+    "premium_monthly": 247,
+    "upsells": [
+      {"name": "Seasonal Campaign Automation", "price": 147, "billing": "monthly"},
+      {"name": "Lead Generation", "price": 197, "billing": "monthly"}
+    ]
+  },
+  "custom_fields": [
+    {"name": "Services", "type": "multi_select", "options": ["Lawn Care", "Hardscaping", "Irrigation", "Tree Service", "Snow Removal", "Design", "Commercial Maintenance"]},
+    {"name": "License Number", "type": "text"},
+    {"name": "Equipment Owned", "type": "multi_select", "options": ["Commercial Mowers", "Excavators", "Trucks", "Trailers"]},
+    {"name": "Service Radius", "type": "dropdown", "options": ["10mi", "25mi", "50mi"]},
+    {"name": "Seasonal Services", "type": "multi_select", "options": ["Spring Cleanup", "Summer Maintenance", "Fall Leaf Removal", "Winter Snow"]},
+    {"name": "Insurance Verified", "type": "checkbox"}
+  ],
+  "sales_pipeline": {
+    "name": "Landscaping Lead Acquisition",
+    "stages": [
+      {"name": "Lead"},
+      {"name": "Contacted"},
+      {"name": "Site Visit"},
+      {"name": "Estimate Sent"},
+      {"name": "Won"},
+      {"name": "Lost"}
+    ]
+  },
+  "service_pipeline": {
+    "name": "Landscaping Service Delivery",
+    "stages": [
+      {"name": "Onboarding"},
+      {"name": "Setup"},
+      {"name": "Active"},
+      {"name": "Seasonal Featured"},
+      {"name": "Annual Partner"}
+    ]
+  },
+  "circles": ["Landscaping-Free", "Landscaping-Basic", "Landscaping-Premium", "Landscaping-Churned", "Landscaping-VIP"],
+  "kickoff_form": {
+    "name": "Landscaping Business Registration",
+    "role_assignment": "Lead",
+    "fields": [
+      {"name": "Business Name", "type": "text", "required": true},
+      {"name": "Owner Name", "type": "text", "required": true},
+      {"name": "Email", "type": "email", "required": true},
+      {"name": "Phone", "type": "phone", "required": true},
+      {"name": "Services Offered", "type": "multi_select"},
+      {"name": "Service Area", "type": "text"},
+      {"name": "Years in Business", "type": "number"},
+      {"name": "Residential or Commercial", "type": "dropdown", "options": ["Residential", "Commercial", "Both"]}
+    ],
+    "automations": ["Add to Landscaping-Free Circle", "Apply Folder Generator", "Assign Onboarding FLOW", "Fire n8n webhook"]
+  },
+  "project_template": {
+    "name": "Landscaping Onboarding",
+    "tasks": [
+      {"name": "Insurance & License Verification", "assigned_to": "Staff", "duration_days": 2},
+      {"name": "Profile & Service Setup", "assigned_to": "Staff", "duration_days": 3},
+      {"name": "Before/After Project Gallery", "assigned_to": "Client", "duration_days": 5},
+      {"name": "Portal Training", "assigned_to": "Staff", "duration_days": 1},
+      {"name": "Go-Live", "assigned_to": "Staff", "duration_days": 1}
+    ]
+  },
+  "email_angles": [
+    "Day 0: Welcome to Landscaping Directory",
+    "Day 1: Seasonal service positioning - spring/summer prep",
+    "Day 3: Project portfolio - showcase transformation work",
+    "Day 7: How landscaper landed 6 contracts from spring listing"
+  ]
+}

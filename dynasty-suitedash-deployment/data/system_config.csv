@@ -1,0 +1,3 @@
+config_key,value,updated_at,updated_by,notes
+system_active,true,2026-03-18T01:00:00Z,cli_admin,Master automation switch
+api_calls_this_month,847,2026-03-18T06:30:00Z,system,Rolling counter for SuiteDash API

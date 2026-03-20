@@ -1,0 +1,76 @@
+{
+  "niche_id": "immigration_legal",
+  "display_name": "Immigration Legal Services",
+  "pack_number": 7,
+  "offer_structure": {
+    "setup_fee": 497,
+    "basic_monthly": 197,
+    "premium_monthly": 497,
+    "upsells": [
+      {"name": "Lead Generation", "price": 297, "billing": "monthly"},
+      {"name": "Multi-Language Portal", "price": 297, "billing": "one-time"},
+      {"name": "Case Status Automation", "price": 197, "billing": "monthly"}
+    ]
+  },
+  "custom_fields": [
+    {"name": "Practice Areas", "type": "multi_select", "options": ["Family-Based", "Employment-Based", "Asylum/Refugee", "Deportation Defense", "Naturalization", "Business Immigration", "Student Visas"]},
+    {"name": "Bar Admissions", "type": "multi_select"},
+    {"name": "Languages Spoken", "type": "multi_select", "options": ["English", "Spanish", "Mandarin", "Hindi", "Arabic", "Portuguese", "French", "Other"]},
+    {"name": "AILA Member", "type": "checkbox"},
+    {"name": "Case Types", "type": "multi_select", "options": ["Green Cards", "H-1B", "L-1", "O-1", "EB-5", "DACA", "TPS"]},
+    {"name": "Consultation Fee", "type": "dropdown", "options": ["Free", "$50-$100", "$100-$250", "$250+"]}
+  ],
+  "sales_pipeline": {
+    "name": "Immigration Legal Lead Acquisition",
+    "stages": [
+      {"name": "Lead"},
+      {"name": "Consultation Booked"},
+      {"name": "Consultation Complete"},
+      {"name": "Retainer Sent"},
+      {"name": "Retained"},
+      {"name": "Lost"}
+    ]
+  },
+  "service_pipeline": {
+    "name": "Immigration Legal Service Delivery",
+    "stages": [
+      {"name": "Onboarding"},
+      {"name": "Profile Setup"},
+      {"name": "Active Listing"},
+      {"name": "Premium Partner"},
+      {"name": "Renewal"}
+    ]
+  },
+  "circles": ["Immigration Legal-Free", "Immigration Legal-Basic", "Immigration Legal-Premium", "Immigration Legal-Churned", "Immigration Legal-VIP"],
+  "kickoff_form": {
+    "name": "Immigration Legal Firm Registration",
+    "role_assignment": "Lead",
+    "fields": [
+      {"name": "Firm Name", "type": "text", "required": true},
+      {"name": "Attorney Name", "type": "text", "required": true},
+      {"name": "Email", "type": "email", "required": true},
+      {"name": "Phone", "type": "phone", "required": true},
+      {"name": "Practice Areas", "type": "multi_select"},
+      {"name": "Languages Spoken", "type": "multi_select"},
+      {"name": "Bar Number", "type": "text"},
+      {"name": "Consultation Fee", "type": "dropdown"}
+    ],
+    "automations": ["Add to Immigration Legal-Free Circle", "Apply Folder Generator", "Assign Onboarding FLOW", "Fire n8n webhook"]
+  },
+  "project_template": {
+    "name": "Immigration Legal Onboarding",
+    "tasks": [
+      {"name": "Bar Admission Verification", "assigned_to": "Staff", "duration_days": 3},
+      {"name": "Profile & Practice Area Setup", "assigned_to": "Staff", "duration_days": 3},
+      {"name": "Client Testimonial Collection", "assigned_to": "Client", "duration_days": 7},
+      {"name": "Multi-Language Configuration", "assigned_to": "Staff", "duration_days": 2},
+      {"name": "Go-Live", "assigned_to": "Staff", "duration_days": 1}
+    ]
+  },
+  "email_angles": [
+    "Day 0: Welcome to Immigration Legal Directory",
+    "Day 1: Multi-language portal setup - reach more clients",
+    "Day 3: Specialization visibility - attract right case types",
+    "Day 7: How immigration attorney attracted 5 new cases from listing"
+  ]
+}

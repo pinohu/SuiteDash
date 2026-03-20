@@ -1,0 +1,75 @@
+{
+  "niche_id": "hvac",
+  "display_name": "HVAC Services",
+  "pack_number": 2,
+  "offer_structure": {
+    "setup_fee": 297,
+    "basic_monthly": 97,
+    "premium_monthly": 297,
+    "upsells": [
+      {"name": "Lead Generation", "price": 197, "billing": "monthly"},
+      {"name": "Emergency Dispatch Automation", "price": 297, "billing": "monthly"}
+    ]
+  },
+  "custom_fields": [
+    {"name": "HVAC Specialties", "type": "multi_select", "options": ["Heating", "Cooling", "Ventilation", "Ductwork", "Heat Pumps", "Geothermal", "Commercial HVAC"]},
+    {"name": "EPA Certification", "type": "dropdown", "options": ["Type I", "Type II", "Universal", "None"]},
+    {"name": "Brands Serviced", "type": "multi_select", "options": ["Carrier", "Lennox", "Trane", "Rheem", "Goodman", "Other"]},
+    {"name": "Emergency Service", "type": "checkbox"},
+    {"name": "Service Radius", "type": "dropdown", "options": ["10mi", "25mi", "50mi", "Regional"]},
+    {"name": "Avg Ticket Size", "type": "dropdown", "options": ["Under $500", "$500-$2K", "$2K-$10K", "$10K+"]}
+  ],
+  "sales_pipeline": {
+    "name": "HVAC Lead Acquisition",
+    "stages": [
+      {"name": "Lead Captured", "probability": 10, "auto_action": "Assign coordinator"},
+      {"name": "Contacted", "probability": 25, "auto_action": "Send seasonal offer overview"},
+      {"name": "Demo Booked", "probability": 50, "auto_action": "Schedule walkthrough"},
+      {"name": "Proposal Sent", "probability": 65, "auto_action": "Follow-up sequence"},
+      {"name": "Won", "probability": 100, "auto_action": "Trigger onboarding"},
+      {"name": "Lost", "probability": 0, "auto_action": "Win-back sequence"}
+    ]
+  },
+  "service_pipeline": {
+    "name": "HVAC Service Delivery",
+    "stages": [
+      {"name": "Onboarding", "action": "Certification verification + profile setup"},
+      {"name": "Portal Setup", "action": "Listing + seasonal service configuration"},
+      {"name": "Active", "action": "Listed, receiving leads"},
+      {"name": "Seasonal Review", "action": "Pre-summer/pre-winter optimization"},
+      {"name": "Retainer", "action": "Annual partnership"}
+    ]
+  },
+  "circles": ["HVAC-Free", "HVAC-Basic", "HVAC-Premium", "HVAC-Churned", "HVAC-VIP"],
+  "kickoff_form": {
+    "name": "HVAC Business Registration",
+    "role_assignment": "Lead",
+    "fields": [
+      {"name": "Business Name", "type": "text", "required": true},
+      {"name": "Owner Name", "type": "text", "required": true},
+      {"name": "Email", "type": "email", "required": true},
+      {"name": "Phone", "type": "phone", "required": true},
+      {"name": "HVAC Specialties", "type": "multi_select", "options": ["Heating", "Cooling", "Ventilation", "Ductwork", "Heat Pumps", "Geothermal", "Commercial"]},
+      {"name": "EPA Certification Level", "type": "dropdown", "options": ["Type I", "Type II", "Universal"]},
+      {"name": "Service Area", "type": "text"},
+      {"name": "Years in Business", "type": "number"}
+    ],
+    "automations": ["Add to HVAC-Free Circle", "Apply Folder Generator", "Assign Onboarding FLOW", "Fire n8n webhook"]
+  },
+  "project_template": {
+    "name": "HVAC Onboarding",
+    "tasks": [
+      {"name": "EPA Certification Verification", "assigned_to": "Staff", "duration_days": 2},
+      {"name": "Profile & Seasonal Service Setup", "assigned_to": "Staff", "duration_days": 3},
+      {"name": "Photo/Equipment Gallery Upload", "assigned_to": "Client", "duration_days": 5},
+      {"name": "Portal Training", "assigned_to": "Staff", "duration_days": 1},
+      {"name": "Go-Live & Lead Test", "assigned_to": "Staff", "duration_days": 1}
+    ]
+  },
+  "email_angles": [
+    "Day 0: Welcome to HVAC Directory",
+    "Day 1: Optimize your seasonal listing",
+    "Day 3: Pre-season lead generation tips",
+    "Day 7: Top HVAC contractor success story"
+  ]
+}

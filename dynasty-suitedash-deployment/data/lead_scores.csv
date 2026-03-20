@@ -1,0 +1,3 @@
+record_id,contact_id,form_source,niche,urgency_score,budget_score,location_score,size_score,completeness_score,total_score,priority,recommended_tier,routing_action,timestamp,outcome,conversion_days
+rec_ls_001,lead_plumb_901,web_form,plumbing,25,25,20,15,15,100,hot,premium,assign_senior,2026-03-10T11:20:00Z,won,4
+rec_ls_002,lead_plumb_902,directory_inquiry,plumbing,10,10,10,7,10,47,cold,free,nurture_only,2026-03-12T16:45:00Z,pending,

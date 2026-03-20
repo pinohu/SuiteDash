@@ -1,0 +1,3 @@
+record_id,client_id,date,logins,profile_updates,features_used,community_posts,support_tickets,days_since_login,calculated_score,previous_score,score_change,risk_level,action_triggered
+rec_eng_001,cli_plumb_001,2026-03-18T08:00:00Z,4,2,6,1,0,2,58,55,3,healthy,
+rec_eng_002,cli_plumb_002,2026-03-18T08:00:00Z,1,0,2,0,1,5,22,28,-6,medium,profile_nudge_sent

@@ -1,0 +1,76 @@
+{
+  "niche_id": "tax_accounting",
+  "display_name": "Tax & Accounting Firms",
+  "pack_number": 8,
+  "offer_structure": {
+    "setup_fee": 397,
+    "basic_monthly": 147,
+    "premium_monthly": 397,
+    "upsells": [
+      {"name": "Lead Generation", "price": 247, "billing": "monthly"},
+      {"name": "Tax Season Surge Ads", "price": 497, "billing": "per season"},
+      {"name": "Client Portal", "price": 297, "billing": "one-time"}
+    ]
+  },
+  "custom_fields": [
+    {"name": "Services", "type": "multi_select", "options": ["Tax Preparation", "Bookkeeping", "Payroll", "Audit", "Advisory", "Estate Planning", "Business Formation"]},
+    {"name": "Certifications", "type": "multi_select", "options": ["CPA", "EA", "CMA", "CFP", "CGMA"]},
+    {"name": "Client Types", "type": "multi_select", "options": ["Individual", "Small Business", "Corporation", "Nonprofit", "High Net Worth"]},
+    {"name": "Software Platforms", "type": "multi_select", "options": ["QuickBooks", "Xero", "FreshBooks", "Sage", "TaxSlayer", "Drake"]},
+    {"name": "Firm Size", "type": "dropdown", "options": ["Solo", "2-5", "6-20", "20+"]},
+    {"name": "Tax Season Availability", "type": "checkbox"}
+  ],
+  "sales_pipeline": {
+    "name": "Tax & Accounting Lead Acquisition",
+    "stages": [
+      {"name": "Lead"},
+      {"name": "Contacted"},
+      {"name": "Consultation"},
+      {"name": "Proposal"},
+      {"name": "Won"},
+      {"name": "Lost"}
+    ]
+  },
+  "service_pipeline": {
+    "name": "Tax & Accounting Service Delivery",
+    "stages": [
+      {"name": "Onboarding"},
+      {"name": "Credential Verification"},
+      {"name": "Active Listing"},
+      {"name": "Tax Season Featured"},
+      {"name": "Annual Partner"}
+    ]
+  },
+  "circles": ["Tax Accounting-Free", "Tax Accounting-Basic", "Tax Accounting-Premium", "Tax Accounting-Churned", "Tax Accounting-VIP"],
+  "kickoff_form": {
+    "name": "Tax & Accounting Firm Registration",
+    "role_assignment": "Lead",
+    "fields": [
+      {"name": "Firm Name", "type": "text", "required": true},
+      {"name": "Contact Name", "type": "text", "required": true},
+      {"name": "Email", "type": "email", "required": true},
+      {"name": "Phone", "type": "phone", "required": true},
+      {"name": "Services Offered", "type": "multi_select"},
+      {"name": "Certifications", "type": "multi_select"},
+      {"name": "Client Types Served", "type": "multi_select"},
+      {"name": "PTIN Number", "type": "text"}
+    ],
+    "automations": ["Add to Tax Accounting-Free Circle", "Apply Folder Generator", "Assign Onboarding FLOW", "Fire n8n webhook"]
+  },
+  "project_template": {
+    "name": "Tax & Accounting Onboarding",
+    "tasks": [
+      {"name": "Credential & PTIN Verification", "assigned_to": "Staff", "duration_days": 3},
+      {"name": "Profile & Service Setup", "assigned_to": "Staff", "duration_days": 3},
+      {"name": "Client Review Collection", "assigned_to": "Client", "duration_days": 7},
+      {"name": "Portal Training", "assigned_to": "Staff", "duration_days": 1},
+      {"name": "Go-Live", "assigned_to": "Staff", "duration_days": 1}
+    ]
+  },
+  "email_angles": [
+    "Day 0: Welcome to Tax & Accounting Directory",
+    "Day 1: Tax season positioning - featured listing coming",
+    "Day 3: Client testimonials build trust and authority",
+    "Day 7: How local CPA firm booked 12 clients before tax season"
+  ]
+}

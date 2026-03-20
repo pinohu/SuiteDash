@@ -1,0 +1,3 @@
+client_id,suitedash_id,name,email,company,niche,membership_tier,lifecycle_stage,engagement_score,churn_risk,ltv,acquisition_channel,onboarding_complete,days_since_login,signup_date,renewal_date,stripe_customer_id,coordinator,directory_source,nps_score
+cli_plumb_001,sd_88001,Mike Pipeworks,mike@pipeworks-plumbing.com,Pipeworks Plumbing LLC,plumbing,premium,active,72,low,8900,Google Ads,true,2,2025-06-01T10:00:00Z,2026-06-01T10:00:00Z,cus_plumb_001,Jordan Lee,Metro Plumbing Directory,9
+cli_plumb_002,sd_88002,Sarah DrainRight,sarah@drainright.com,DrainRight Services,plumbing,basic,active,54,medium,2100,Referral,false,5,2025-11-15T14:30:00Z,2026-11-15T14:30:00Z,cus_plumb_002,Alex Kim,Regional Trades Hub,7

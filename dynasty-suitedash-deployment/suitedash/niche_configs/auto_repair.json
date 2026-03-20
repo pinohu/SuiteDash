@@ -1,0 +1,75 @@
+{
+  "niche_id": "auto_repair",
+  "display_name": "Auto Repair Shops",
+  "pack_number": 12,
+  "offer_structure": {
+    "setup_fee": 297,
+    "basic_monthly": 97,
+    "premium_monthly": 297,
+    "upsells": [
+      {"name": "Lead Generation", "price": 197, "billing": "monthly"},
+      {"name": "Appointment Booking Automation", "price": 147, "billing": "monthly"}
+    ]
+  },
+  "custom_fields": [
+    {"name": "Services", "type": "multi_select", "options": ["General Repair", "Transmission", "Brakes", "Engine", "Electrical", "Body Work", "Tires", "Oil Change", "Diagnostics"]},
+    {"name": "Certifications", "type": "multi_select", "options": ["ASE Certified", "AAA Approved", "Manufacturer Certified", "I-CAR"]},
+    {"name": "Makes Serviced", "type": "multi_select", "options": ["All Makes", "Domestic", "Import", "European", "Luxury", "Diesel", "Hybrid/EV"]},
+    {"name": "Warranty Offered", "type": "checkbox"},
+    {"name": "Bays/Lifts", "type": "dropdown", "options": ["1-3", "4-8", "9-15", "15+"]},
+    {"name": "Towing Available", "type": "checkbox"}
+  ],
+  "sales_pipeline": {
+    "name": "Auto Repair Lead Acquisition",
+    "stages": [
+      {"name": "Lead"},
+      {"name": "Contacted"},
+      {"name": "Shop Visit"},
+      {"name": "Proposal"},
+      {"name": "Won"},
+      {"name": "Lost"}
+    ]
+  },
+  "service_pipeline": {
+    "name": "Auto Repair Service Delivery",
+    "stages": [
+      {"name": "Onboarding"},
+      {"name": "Certification Verification"},
+      {"name": "Active"},
+      {"name": "Featured Shop"},
+      {"name": "Annual Partner"}
+    ]
+  },
+  "circles": ["Auto Repair-Free", "Auto Repair-Basic", "Auto Repair-Premium", "Auto Repair-Churned", "Auto Repair-VIP"],
+  "kickoff_form": {
+    "name": "Auto Repair Shop Registration",
+    "role_assignment": "Lead",
+    "fields": [
+      {"name": "Shop Name", "type": "text", "required": true},
+      {"name": "Owner Name", "type": "text", "required": true},
+      {"name": "Email", "type": "email", "required": true},
+      {"name": "Phone", "type": "phone", "required": true},
+      {"name": "Services Offered", "type": "multi_select"},
+      {"name": "Certifications", "type": "multi_select"},
+      {"name": "Makes Serviced", "type": "multi_select"},
+      {"name": "Years in Business", "type": "number"}
+    ],
+    "automations": ["Add to Auto Repair-Free Circle", "Apply Folder Generator", "Assign Onboarding FLOW", "Fire n8n webhook"]
+  },
+  "project_template": {
+    "name": "Auto Repair Onboarding",
+    "tasks": [
+      {"name": "ASE/Certification Verification", "assigned_to": "Staff", "duration_days": 2},
+      {"name": "Profile & Service Menu Setup", "assigned_to": "Staff", "duration_days": 3},
+      {"name": "Shop Photo Gallery", "assigned_to": "Client", "duration_days": 5},
+      {"name": "Portal Training", "assigned_to": "Staff", "duration_days": 1},
+      {"name": "Go-Live", "assigned_to": "Staff", "duration_days": 1}
+    ]
+  },
+  "email_angles": [
+    "Day 0: Welcome to Auto Repair Directory",
+    "Day 1: ASE certifications build customer confidence",
+    "Day 3: Service specialization attracts right customers",
+    "Day 7: How local repair shop filled schedule from directory listing"
+  ]
+}

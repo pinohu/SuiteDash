@@ -1,0 +1,76 @@
+{
+  "niche_id": "construction",
+  "display_name": "Construction Contractors",
+  "pack_number": 16,
+  "offer_structure": {
+    "setup_fee": 397,
+    "basic_monthly": 147,
+    "premium_monthly": 397,
+    "upsells": [
+      {"name": "Project Showcase", "price": 197, "billing": "monthly"},
+      {"name": "Lead Generation", "price": 297, "billing": "monthly"},
+      {"name": "Bid Management", "price": 247, "billing": "monthly"}
+    ]
+  },
+  "custom_fields": [
+    {"name": "Trade Type", "type": "multi_select", "options": ["General Contractor", "Electrical", "Plumbing", "HVAC", "Framing", "Concrete", "Demolition", "Excavation"]},
+    {"name": "License Number", "type": "text"},
+    {"name": "Bond Amount", "type": "dropdown", "options": ["$25K", "$50K", "$100K", "$250K", "$500K+"]},
+    {"name": "Insurance Verified", "type": "checkbox"},
+    {"name": "Project Size Range", "type": "dropdown", "options": ["Under $25K", "$25K-$100K", "$100K-$500K", "$500K-$1M", "$1M+"]},
+    {"name": "OSHA Certified", "type": "checkbox"}
+  ],
+  "sales_pipeline": {
+    "name": "Construction Lead Acquisition",
+    "stages": [
+      {"name": "Lead"},
+      {"name": "Contacted"},
+      {"name": "Site Visit"},
+      {"name": "Bid Submitted"},
+      {"name": "Won"},
+      {"name": "Lost"}
+    ]
+  },
+  "service_pipeline": {
+    "name": "Construction Service Delivery",
+    "stages": [
+      {"name": "Onboarding"},
+      {"name": "License/Bond Verification"},
+      {"name": "Active Listing"},
+      {"name": "Preferred Contractor"},
+      {"name": "Annual Partner"}
+    ]
+  },
+  "circles": ["Construction-Free", "Construction-Basic", "Construction-Premium", "Construction-Churned", "Construction-VIP"],
+  "kickoff_form": {
+    "name": "Construction Contractor Registration",
+    "role_assignment": "Lead",
+    "fields": [
+      {"name": "Company Name", "type": "text", "required": true},
+      {"name": "Owner Name", "type": "text", "required": true},
+      {"name": "Email", "type": "email", "required": true},
+      {"name": "Phone", "type": "phone", "required": true},
+      {"name": "Trade Types", "type": "multi_select"},
+      {"name": "License Number", "type": "text"},
+      {"name": "Bond Amount", "type": "dropdown"},
+      {"name": "Typical Project Size", "type": "dropdown"}
+    ],
+    "automations": ["Add to Construction-Free Circle", "Apply Folder Generator", "Assign Onboarding FLOW", "Fire n8n webhook"]
+  },
+  "project_template": {
+    "name": "Construction Contractor Onboarding",
+    "tasks": [
+      {"name": "License, Bond & Insurance Verification", "assigned_to": "Staff", "duration_days": 3},
+      {"name": "Profile & Trade Setup", "assigned_to": "Staff", "duration_days": 3},
+      {"name": "Project Portfolio (photos + descriptions)", "assigned_to": "Client", "duration_days": 7},
+      {"name": "Portal Training", "assigned_to": "Staff", "duration_days": 1},
+      {"name": "Go-Live", "assigned_to": "Staff", "duration_days": 1}
+    ]
+  },
+  "email_angles": [
+    "Day 0: Welcome to Construction Contractor Directory",
+    "Day 1: License, bond, and insurance verification - build GC trust",
+    "Day 3: Project portfolio - showcase completed work",
+    "Day 7: How general contractor landed $500K in bids from listing"
+  ]
+}

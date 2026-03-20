@@ -1,0 +1,75 @@
+{
+  "niche_id": "roofing",
+  "display_name": "Roofing Contractors",
+  "pack_number": 4,
+  "offer_structure": {
+    "setup_fee": 397,
+    "basic_monthly": 147,
+    "premium_monthly": 347,
+    "upsells": [
+      {"name": "Storm Damage Lead Routing", "price": 297, "billing": "monthly"},
+      {"name": "Website", "price": 597, "billing": "one-time"}
+    ]
+  },
+  "custom_fields": [
+    {"name": "Roofing Types", "type": "multi_select", "options": ["Asphalt Shingle", "Metal", "Tile", "Flat/Commercial", "Slate", "Cedar Shake"]},
+    {"name": "License Number", "type": "text"},
+    {"name": "Insurance Coverage", "type": "dropdown", "options": ["$1M", "$2M", "$5M+"]},
+    {"name": "Storm Damage Certified", "type": "checkbox"},
+    {"name": "Avg Project Size", "type": "dropdown", "options": ["Under $5K", "$5K-$15K", "$15K-$50K", "$50K+"]},
+    {"name": "Manufacturer Certifications", "type": "multi_select", "options": ["GAF", "Owens Corning", "CertainTeed", "TAMKO"]}
+  ],
+  "sales_pipeline": {
+    "name": "Roofing Lead Acquisition",
+    "stages": [
+      {"name": "Lead Captured", "probability": 10},
+      {"name": "Contacted", "probability": 25},
+      {"name": "Estimate Scheduled", "probability": 50},
+      {"name": "Proposal Sent", "probability": 65},
+      {"name": "Won", "probability": 100},
+      {"name": "Lost", "probability": 0}
+    ]
+  },
+  "service_pipeline": {
+    "name": "Roofing Service Delivery",
+    "stages": [
+      {"name": "Onboarding"},
+      {"name": "License Verification"},
+      {"name": "Active Listing"},
+      {"name": "Storm Season Priority"},
+      {"name": "Annual Partner"}
+    ]
+  },
+  "circles": ["Roofing-Free", "Roofing-Basic", "Roofing-Premium", "Roofing-Churned", "Roofing-VIP"],
+  "kickoff_form": {
+    "name": "Roofing Business Registration",
+    "role_assignment": "Lead",
+    "fields": [
+      {"name": "Company Name", "type": "text", "required": true},
+      {"name": "Owner Name", "type": "text", "required": true},
+      {"name": "Email", "type": "email", "required": true},
+      {"name": "Phone", "type": "phone", "required": true},
+      {"name": "Roofing Types", "type": "multi_select"},
+      {"name": "License Number", "type": "text"},
+      {"name": "Service Area", "type": "text"},
+      {"name": "Storm Damage Certified", "type": "checkbox"}
+    ],
+    "automations": ["Add to Roofing-Free Circle", "Apply Folder Generator", "Assign Onboarding FLOW", "Fire n8n webhook"]
+  },
+  "project_template": {
+    "name": "Roofing Onboarding",
+    "tasks": [
+      {"name": "License, Bond & Insurance Verification", "assigned_to": "Staff", "duration_days": 3},
+      {"name": "Profile & Portfolio Setup", "assigned_to": "Staff", "duration_days": 3},
+      {"name": "Project Photo Gallery (before/after)", "assigned_to": "Client", "duration_days": 5},
+      {"name": "Portal Training", "assigned_to": "Staff", "duration_days": 1},
+      {"name": "Go-Live", "assigned_to": "Staff", "duration_days": 1}
+    ]
+  },
+  "email_angles": [
+    "Day 0: Welcome to Roofing Contractor Directory",
+    "Day 1: Storm season prep - featured listing opportunity",
+    "Day 3: Manufacturer certifications boost credibility",
+    "Day 7: How local roofer landed 5 storm damage leads"
+  ]
+}

@@ -1,0 +1,344 @@
+{
+  "name": "Dynasty - Agent Router: Lead Qualification",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead-qualification",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "name": "Webhook: New Lead",
+      "type": "n8n-nodes-base.webhook",
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const lead = $input.first().json;\n\nlet urgency = 5;\nif (lead.urgency === 'Emergency') urgency = 25;\nelse if (lead.urgency === 'This Week') urgency = 15;\nelse if (lead.urgency === 'This Month') urgency = 10;\n\nlet budget = 5;\nif (lead.service_type === 'Commercial' || lead.budget === 'Premium') budget = 25;\nelse if (lead.budget === 'Standard') budget = 15;\n\nlet location = 5;\nif (lead.in_primary_area) location = 20;\nelse if (lead.in_adjacent_area) location = 10;\n\nlet size = 3;\nif ((lead.team_size || 0) > 50) size = 15;\nelse if ((lead.team_size || 0) > 10) size = 12;\nelse if ((lead.team_size || 0) > 2) size = 7;\n\nconst requiredFields = ['name', 'email', 'phone', 'service_type'];\nconst filled = requiredFields.filter(f => lead[f]).length;\nconst completeness = Math.round((filled / requiredFields.length) * 15);\n\nconst totalScore = urgency + budget + location + size + completeness;\n\nlet priority = 'cold';\nlet tier = 'free';\nlet action = 'nurture_only';\n\nif (totalScore >= 80) { priority = 'hot'; tier = 'premium'; action = 'assign_senior'; }\nelse if (totalScore >= 50) { priority = 'warm'; tier = 'basic'; action = 'standard_onboarding'; }\nelse if (totalScore >= 25) { priority = 'cold'; tier = 'free'; action = 'nurture_only'; }\n\nreturn [{ json: { ...lead, score: totalScore, priority, recommended_tier: tier, routing_action: action, scored_at: new Date().toISOString() } }];"
+      },
+      "name": "Score Lead",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://aitable.ai/fusion/v1/datasheets/{{$env.AITABLE_LEAD_SCORES_TABLE}}/records",
+        "method": "POST",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "fields",
+              "value": "={{JSON.stringify({contact_email: $json.email, niche: $json.niche, total_score: $json.score, priority: $json.priority, recommended_tier: $json.recommended_tier, routing_action: $json.routing_action, timestamp: $json.scored_at})}}"
+            }
+          ]
+        },
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.AITABLE_API_KEY}}"
+            }
+          ]
+        }
+      },
+      "name": "Log Score to AiTable",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        710,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "rules": [
+            {
+              "output": 0,
+              "conditions": {
+                "conditions": [
+                  {
+                    "leftValue": "={{$json.priority}}",
+                    "rightValue": "hot",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "output": 1,
+              "conditions": {
+                "conditions": [
+                  {
+                    "leftValue": "={{$json.priority}}",
+                    "rightValue": "warm",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "output": 2
+            }
+          ]
+        }
+      },
+      "name": "Route by Priority",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        940,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{$env.SUITEDASH_BASE_URL}}/contact",
+        "method": "POST",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "first_name",
+              "value": "={{$json.first_name}}"
+            },
+            {
+              "name": "last_name",
+              "value": "={{$json.last_name}}"
+            },
+            {
+              "name": "email",
+              "value": "={{$json.email}}"
+            },
+            {
+              "name": "role",
+              "value": "lead"
+            },
+            {
+              "name": "custom_membership_tier",
+              "value": "premium"
+            },
+            {
+              "name": "custom_lifecycle_stage",
+              "value": "onboarding"
+            }
+          ]
+        },
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Public-ID",
+              "value": "={{$env.SUITEDASH_API_ID}}"
+            },
+            {
+              "name": "X-Secret-Key",
+              "value": "={{$env.SUITEDASH_API_SECRET}}"
+            }
+          ]
+        }
+      },
+      "name": "Create Premium Lead",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1200,
+        150
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{$env.SUITEDASH_BASE_URL}}/contact",
+        "method": "POST",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "first_name",
+              "value": "={{$json.first_name}}"
+            },
+            {
+              "name": "last_name",
+              "value": "={{$json.last_name}}"
+            },
+            {
+              "name": "email",
+              "value": "={{$json.email}}"
+            },
+            {
+              "name": "role",
+              "value": "lead"
+            },
+            {
+              "name": "custom_membership_tier",
+              "value": "basic"
+            },
+            {
+              "name": "custom_lifecycle_stage",
+              "value": "onboarding"
+            }
+          ]
+        },
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Public-ID",
+              "value": "={{$env.SUITEDASH_API_ID}}"
+            },
+            {
+              "name": "X-Secret-Key",
+              "value": "={{$env.SUITEDASH_API_SECRET}}"
+            }
+          ]
+        }
+      },
+      "name": "Create Standard Lead",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{$env.SUITEDASH_BASE_URL}}/contact",
+        "method": "POST",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "first_name",
+              "value": "={{$json.first_name}}"
+            },
+            {
+              "name": "last_name",
+              "value": "={{$json.last_name}}"
+            },
+            {
+              "name": "email",
+              "value": "={{$json.email}}"
+            },
+            {
+              "name": "role",
+              "value": "lead"
+            },
+            {
+              "name": "custom_membership_tier",
+              "value": "free"
+            }
+          ]
+        },
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Public-ID",
+              "value": "={{$env.SUITEDASH_API_ID}}"
+            },
+            {
+              "name": "X-Secret-Key",
+              "value": "={{$env.SUITEDASH_API_SECRET}}"
+            }
+          ]
+        }
+      },
+      "name": "Create Free Lead",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1200,
+        450
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook: New Lead": {
+      "main": [
+        [
+          {
+            "node": "Score Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Score Lead": {
+      "main": [
+        [
+          {
+            "node": "Log Score to AiTable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Score to AiTable": {
+      "main": [
+        [
+          {
+            "node": "Route by Priority",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route by Priority": {
+      "main": [
+        [
+          {
+            "node": "Create Premium Lead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create Standard Lead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create Free Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "errorWorkflow": "dynasty-failure-handler"
+  },
+  "tags": [
+    {
+      "name": "dynasty"
+    },
+    {
+      "name": "agents"
+    },
+    {
+      "name": "lead-qualification"
+    }
+  ]
+}

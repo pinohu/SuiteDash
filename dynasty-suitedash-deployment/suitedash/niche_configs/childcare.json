@@ -1,0 +1,75 @@
+{
+  "niche_id": "childcare",
+  "display_name": "Childcare Providers",
+  "pack_number": 13,
+  "offer_structure": {
+    "setup_fee": 297,
+    "basic_monthly": 97,
+    "premium_monthly": 247,
+    "upsells": [
+      {"name": "Parent Review Management", "price": 97, "billing": "monthly"},
+      {"name": "Enrollment Automation", "price": 147, "billing": "monthly"}
+    ]
+  },
+  "custom_fields": [
+    {"name": "Care Type", "type": "multi_select", "options": ["Daycare Center", "Home Daycare", "Preschool", "After School", "Nanny Agency", "Special Needs"]},
+    {"name": "Age Groups", "type": "multi_select", "options": ["Infant (0-1)", "Toddler (1-3)", "Preschool (3-5)", "School Age (5-12)"]},
+    {"name": "License Number", "type": "text"},
+    {"name": "Capacity", "type": "number"},
+    {"name": "Curriculum", "type": "multi_select", "options": ["Montessori", "Reggio Emilia", "Play-Based", "STEM", "Religious", "Waldorf"]},
+    {"name": "Subsidy Accepted", "type": "checkbox"}
+  ],
+  "sales_pipeline": {
+    "name": "Childcare Lead Acquisition",
+    "stages": [
+      {"name": "Lead"},
+      {"name": "Contacted"},
+      {"name": "Tour Scheduled"},
+      {"name": "Application"},
+      {"name": "Enrolled"},
+      {"name": "Lost"}
+    ]
+  },
+  "service_pipeline": {
+    "name": "Childcare Service Delivery",
+    "stages": [
+      {"name": "Onboarding"},
+      {"name": "License Verification"},
+      {"name": "Active Listing"},
+      {"name": "Featured Provider"},
+      {"name": "Annual Partner"}
+    ]
+  },
+  "circles": ["Childcare-Free", "Childcare-Basic", "Childcare-Premium", "Childcare-Churned", "Childcare-VIP"],
+  "kickoff_form": {
+    "name": "Childcare Provider Registration",
+    "role_assignment": "Lead",
+    "fields": [
+      {"name": "Center/Provider Name", "type": "text", "required": true},
+      {"name": "Contact Name", "type": "text", "required": true},
+      {"name": "Email", "type": "email", "required": true},
+      {"name": "Phone", "type": "phone", "required": true},
+      {"name": "Care Type", "type": "multi_select"},
+      {"name": "Age Groups Served", "type": "multi_select"},
+      {"name": "License Number", "type": "text"},
+      {"name": "Capacity", "type": "number"}
+    ],
+    "automations": ["Add to Childcare-Free Circle", "Apply Folder Generator", "Assign Onboarding FLOW", "Fire n8n webhook"]
+  },
+  "project_template": {
+    "name": "Childcare Onboarding",
+    "tasks": [
+      {"name": "License & Background Check Verification", "assigned_to": "Staff", "duration_days": 3},
+      {"name": "Profile & Curriculum Setup", "assigned_to": "Staff", "duration_days": 3},
+      {"name": "Facility Photo Tour", "assigned_to": "Client", "duration_days": 5},
+      {"name": "Portal Training", "assigned_to": "Staff", "duration_days": 1},
+      {"name": "Go-Live", "assigned_to": "Staff", "duration_days": 1}
+    ]
+  },
+  "email_angles": [
+    "Day 0: Welcome to Childcare Directory",
+    "Day 1: Parent trust - license and background verification",
+    "Day 3: Curriculum showcase - attract ideal families",
+    "Day 7: How daycare center filled capacity from directory"
+  ]
+}

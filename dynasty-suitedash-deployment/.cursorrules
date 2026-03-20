@@ -1,0 +1,71 @@
+# Dynasty Empire — SuiteDash Deployment System
+# Cursor IDE Instructions
+
+## Project Overview
+Multi-niche directory business factory powered by SuiteDash (CRM/portal), n8n (automation), AiTable (data/analytics), and Stripe (payments). 16 niches, 7 AI agents, 9 n8n workflows, 12 AiTable tables.
+
+## Architecture
+- **SuiteDash** = Client portal, identity, billing (manual config via web UI)
+- **n8n** = Automation orchestration (9 importable JSON workflows)
+- **AiTable** = Data layer, analytics, agent memory (12 tables)
+- **Stripe** = Payment processing (webhooks only)
+- **OpenAI** = Agent intelligence (GPT-4 via n8n HTTP nodes)
+
+## Key Files
+- `env/.env` — All API credentials (NEVER commit to git)
+- `n8n/*.json` — Importable n8n workflow definitions (import via n8n UI or API)
+- `suitedash/` — Configuration references for manual SuiteDash setup
+- `scripts/` — Node.js setup/deployment/testing utilities
+- `dashboard/` — Operations monitoring dashboard (static HTML + Chart.js)
+- `data/` — CSV schemas for AiTable table creation
+
+## API Patterns
+
+### SuiteDash API
+- Base URL: `https://portal.yourdeputy.com/secure-api`
+- Auth: Headers `X-Public-ID: {SUITEDASH_API_ID}` and `X-Secret-Key: {SUITEDASH_API_SECRET}` (see Integrations → Secure API; not X-API-KEY)
+- Endpoints: /contact, /contacts, /company, /companies, /invoice, /invoices, /project, /projects, /deal, /deals, /task, /tasks, /pipeline, /pipelines, /circle, /circles
+- Rate limits: Start=400/mo, Thrive=2000/mo, Pinnacle=20000/mo
+- CRITICAL: Always check API rate limits before batch operations
+
+### AiTable API
+- Base URL: `https://aitable.ai/fusion/v1/datasheets/{TABLE_ID}`
+- Auth: Header `Authorization: Bearer {AITABLE_API_KEY}`
+- Key: `usk8wYBrRgsc6RHxkZP9VAN`
+- Operations: GET (list records), POST (create), PATCH (update), DELETE
+- This is AiTable, NOT Airtable — different API format
+
+### n8n API
+- Base URL: Configured via N8N_BASE_URL
+- Auth: Header `X-N8N-API-KEY` + Cloudflare Access headers
+- Webhook base: `{N8N_WEBHOOK_BASE}/dynasty-events` (Master Event Router)
+
+## Conventions
+- All n8n workflows check Emergency Stop (AiTable system_config) before executing
+- All workflows use Pack 5 (failure_handler) as their error workflow
+- All events route through Pack 8 (master_event_router) — single webhook endpoint
+- Engagement Score formula: (Logins×2) + (ProfileUpdates×3) + (Features×1) + (CommunityPosts×2) + (Tickets×5) - (DaysSinceLogin×1)
+- Circle naming: `{NicheName}-{Tier}` (e.g., "Plumbing-Premium")
+- Lead scoring: Urgency(25) + Budget(25) + Location(20) + Size(15) + Completeness(15) = 100
+
+## 16 Niches (in deployment order)
+1. Plumbing, 2. HVAC, 3. Pest Control, 4. Roofing, 5. Real Estate, 6. Property Management,
+7. Immigration Legal, 8. Tax & Accounting, 9. Medical Billing, 10. Home Cleaning,
+11. Landscaping, 12. Auto Repair, 13. Childcare, 14. Fitness Coaches,
+15. Digital Marketing, 16. Construction
+
+## Do NOT
+- Use Airtable APIs — this project uses AiTable (different service)
+- Push .env files to git
+- Modify n8n workflow JSONs without testing import first
+- Exceed SuiteDash API rate limits (track in system_config)
+- Send customer-facing emails outside 8am-8pm local time
+- Run destructive operations without Emergency Stop check
+
+## Reference Documents (in parent directory)
+- `SuiteDash_Architecture_V2_BACKEND_VERIFIED.md` — Complete SuiteDash feature map
+- `SuiteDash_Full_Deployment_System.md` — 4-phase deployment plan
+- `SuiteDash_Strategic_Guardrails.md` — Capability matrix, constraints, RBAC
+- `SuiteDash_16_Niche_Packs.md` — Full niche pack definitions
+- `SuiteDash_AI_Agent_Layer.md` — 7 agents, router, emergency stop
+- `SuiteDash_Importable_Assets.md` — Data schemas, deployment instructions

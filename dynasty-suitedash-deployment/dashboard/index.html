@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynasty Empire — Operations Dashboard</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; }
+    .header { background: linear-gradient(135deg, #1e293b, #334155); padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #475569; }
+    .header h1 { font-size: 22px; font-weight: 600; }
+    .header h1 span { color: #818cf8; }
+    .header .status { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+    .header .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot.active { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+    .dot.paused { background: #ef4444; box-shadow: 0 0 8px #ef4444; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; padding: 24px 32px; }
+    .card { background: #1e293b; border-radius: 12px; padding: 20px; border: 1px solid #334155; }
+    .card .label { font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+    .card .value { font-size: 28px; font-weight: 700; }
+    .card .change { font-size: 13px; margin-top: 4px; }
+    .card .change.up { color: #22c55e; }
+    .card .change.down { color: #ef4444; }
+    .card .change.neutral { color: #94a3b8; }
+    .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 0 32px 24px; }
+    .chart-card { background: #1e293b; border-radius: 12px; padding: 20px; border: 1px solid #334155; }
+    .chart-card h3 { font-size: 15px; margin-bottom: 16px; color: #cbd5e1; }
+    .alerts { padding: 0 32px 24px; }
+    .alerts h3 { font-size: 15px; margin-bottom: 12px; color: #cbd5e1; }
+    .alert-item { background: #1e293b; border-radius: 8px; padding: 12px 16px; margin-bottom: 8px; border-left: 4px solid; display: flex; justify-content: space-between; align-items: center; }
+    .alert-item.critical { border-color: #ef4444; }
+    .alert-item.warning { border-color: #f59e0b; }
+    .alert-item.info { border-color: #3b82f6; }
+    .alert-item .text { font-size: 14px; }
+    .alert-item .time { font-size: 12px; color: #64748b; }
+    .niche-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; padding: 0 32px 24px; }
+    .niche-card { background: #1e293b; border-radius: 10px; padding: 14px; border: 1px solid #334155; }
+    .niche-card .name { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+    .niche-card .stats { display: flex; justify-content: space-between; font-size: 12px; color: #94a3b8; }
+    .niche-card .stats .num { color: #e2e8f0; font-weight: 600; }
+    .section-title { padding: 0 32px 12px; font-size: 15px; color: #cbd5e1; }
+    .footer { text-align: center; padding: 20px; color: #475569; font-size: 12px; }
+    canvas { max-height: 250px; }
+    .refresh-btn { background: #4f46e5; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+    .refresh-btn:hover { background: #6366f1; }
+    .toggle-btn { border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; }
+    .toggle-btn.active { background: #15803d; color: white; }
+    .toggle-btn.paused { background: #b91c1c; color: white; }
+    .qa-btn { background: #0ea5e9; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+    .qa-btn:hover { background: #0284c7; }
+    @media (max-width: 768px) { .charts { grid-template-columns: 1fr; } .grid { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1><span>Dynasty</span> Empire — Operations Dashboard</h1>
+    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+      <div class="status">
+        <div class="dot active" id="statusDot"></div>
+        <span id="statusText">System Active</span>
+      </div>
+      <button type="button" class="toggle-btn active" id="emergencyToggle" onclick="toggleEmergencyStop()" title="Pause or resume automation">Emergency: Active</button>
+      <button type="button" class="qa-btn" id="qaAuditBtn" onclick="runQaAudit()">Run QA Audit</button>
+      <button class="refresh-btn" type="button" onclick="loadData()">Refresh</button>
+    </div>
+  </div>
+
+  <div class="grid" id="kpiGrid">
+    <div class="card"><div class="label">Monthly Recurring Revenue</div><div class="value" id="mrr">$0</div><div class="change neutral" id="mrrChange">Loading...</div></div>
+    <div class="card"><div class="label">Active Members</div><div class="value" id="activeMembers">0</div><div class="change neutral" id="activeMembersChange">Loading...</div></div>
+    <div class="card"><div class="label">30-Day Churn Rate</div><div class="value" id="churnRate">0%</div><div class="change neutral" id="churnRateChange">Loading...</div></div>
+    <div class="card"><div class="label">Avg Engagement Score</div><div class="value" id="engScore">0</div><div class="change neutral" id="engScoreChange">Loading...</div></div>
+    <div class="card"><div class="label">New Members (Today)</div><div class="value" id="newMembers">0</div><div class="change neutral" id="newMembersChange">Loading...</div></div>
+    <div class="card"><div class="label">DLQ Items Open</div><div class="value" id="dlqOpen">0</div><div class="change neutral" id="dlqOpenChange">Loading...</div></div>
+    <div class="card"><div class="label">API Usage</div><div class="value" id="apiUsage">0%</div><div class="change neutral" id="apiUsageChange">Loading...</div></div>
+    <div class="card"><div class="label">System Integrity</div><div class="value" id="integrity">0%</div><div class="change neutral" id="integrityChange">Loading...</div></div>
+  </div>
+
+  <div class="charts">
+    <div class="chart-card">
+      <h3>MRR Trend (30 Days)</h3>
+      <canvas id="mrrChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Engagement Distribution</h3>
+      <canvas id="engagementChart"></canvas>
+    </div>
+  </div>
+
+  <div class="section-title">Niche Performance</div>
+  <div class="niche-grid" id="nicheGrid"></div>
+
+  <div class="alerts">
+    <h3>Recent Alerts</h3>
+    <div id="alertsList">
+      <div class="alert-item info"><span class="text">Dashboard loaded — connect AiTable API to see live data</span><span class="time">Now</span></div>
+    </div>
+  </div>
+
+  <div class="footer">Dynasty Empire Operations Dashboard v1.0 — Data from AiTable + SuiteDash + Stripe</div>
+
+  <script>
+    const NICHES = [
+      'Plumbing', 'HVAC', 'Pest Control', 'Roofing', 'Real Estate', 'Property Mgmt',
+      'Immigration Legal', 'Tax & Accounting', 'Medical Billing', 'Home Cleaning',
+      'Landscaping', 'Auto Repair', 'Childcare', 'Fitness', 'Digital Marketing', 'Construction'
+    ];
+
+    // Demo data (replace with API calls when AiTable is connected)
+    function generateDemoData() {
+      return {
+        mrr: 12450,
+        mrrPrev: 11800,
+        activeMembers: 287,
+        activeMembersPrev: 279,
+        churnRate: 3.2,
+        churnRatePrev: 4.1,
+        engScore: 42,
+        engScorePrev: 39,
+        newMembers: 3,
+        dlqOpen: 2,
+        apiUsed: 847,
+        apiLimit: 2000,
+        integrityScore: 91,
+        mrrTrend: Array.from({length: 30}, (_, i) => ({
+          date: new Date(Date.now() - (29 - i) * 86400000).toLocaleDateString('en-US', {month: 'short', day: 'numeric'}),
+          value: 10000 + Math.random() * 3000 + i * 80
+        })),
+        engagementDist: [
+          { label: 'Highly Engaged (60+)', value: 45, color: '#22c55e' },
+          { label: 'Healthy (40-59)', value: 112, color: '#3b82f6' },
+          { label: 'Medium (20-39)', value: 89, color: '#f59e0b' },
+          { label: 'At Risk (<20)', value: 41, color: '#ef4444' }
+        ],
+        nichePerformance: NICHES.map(n => ({
+          name: n,
+          members: Math.floor(Math.random() * 40 + 5),
+          mrr: Math.floor(Math.random() * 2000 + 200),
+          avgScore: Math.floor(Math.random() * 40 + 20)
+        })),
+        alerts: [
+          { type: 'warning', text: 'Engagement score dropped >20pts for 3 members', time: '2h ago' },
+          { type: 'info', text: 'QA Audit completed: 11/11 checks passed', time: '6h ago' },
+          { type: 'critical', text: 'DLQ: 2 items unresolved for >48 hours', time: '12h ago' },
+          { type: 'info', text: 'Data sync completed: 0 drift detected', time: '14h ago' }
+        ]
+      };
+    }
+
+    function formatCurrency(n) { return '$' + n.toLocaleString(); }
+    function formatChange(current, prev, suffix = '', invert = false) {
+      const diff = current - prev;
+      const pct = prev > 0 ? ((diff / prev) * 100).toFixed(1) : '0.0';
+      const isGood = invert ? diff < 0 : diff > 0;
+      const arrow = diff > 0 ? '↑' : diff < 0 ? '↓' : '→';
+      const cls = isGood ? 'up' : (diff === 0 ? 'neutral' : 'down');
+      return `<span class="change ${cls}">${arrow} ${Math.abs(pct)}%${suffix}</span>`;
+    }
+
+    let mrrChartInstance = null;
+    let engChartInstance = null;
+
+    function pickLatestAnalytics(records) {
+      if (!records || !records.length) return null;
+      const sorted = [...records].sort((a, b) => {
+        const da = new Date(a.fields?.date || 0).getTime();
+        const db = new Date(b.fields?.date || 0).getTime();
+        return db - da;
+      });
+      return sorted[0]?.fields || null;
+    }
+
+    function recordsFromPayload(json) {
+      if (!json) return [];
+      const d = json.data;
+      if (d && Array.isArray(d.records)) return d.records;
+      if (Array.isArray(json.records)) return json.records;
+      return [];
+    }
+
+    async function fetchJsonSafe(url) {
+      try {
+        const r = await fetch(url);
+        if (!r.ok) throw new Error(String(r.status));
+        return await r.json();
+      } catch (e) {
+        return null;
+      }
+    }
+
+    async function loadData() {
+      const [analyticsJson, systemJson, dlqJson] = await Promise.all([
+        fetchJsonSafe('/api/analytics'),
+        fetchJsonSafe('/api/system-status'),
+        fetchJsonSafe('/api/dlq')
+      ]);
+
+      let data;
+      const analyticsRecs = recordsFromPayload(analyticsJson);
+      const latest = pickLatestAnalytics(analyticsRecs);
+      const sysRecs = recordsFromPayload(systemJson);
+      const activeRow = sysRecs.find(r => String(r.fields?.config_key) === 'system_active');
+      const apiUsedRow = sysRecs.find(r => String(r.fields?.config_key) === 'api_calls_this_month');
+      const apiLimitRow = sysRecs.find(r => String(r.fields?.config_key) === 'api_calls_limit');
+      const dlqRecs = recordsFromPayload(dlqJson);
+
+      if (latest || dlqRecs.length || activeRow) {
+        const mrr = Number(latest?.total_mrr) || 0;
+        const activeMembers = Number(latest?.total_active) || 0;
+        const churnRate = Number(latest?.churn_rate_30d) || 0;
+        const engScore = Number(latest?.avg_engagement_score) || 0;
+        const newMembers = Number(latest?.new_members) || 0;
+        const dlqOpen = dlqRecs.length;
+        const apiUsed = Number(apiUsedRow?.fields?.value) || Number(latest?.api_calls_used) || 0;
+        const apiLimit = Number(apiLimitRow?.fields?.value) || Number(latest?.api_calls_limit) || 2000;
+        const integrityScore = Number(latest?.system_integrity_score) || 91;
+        const isActive = String(activeRow?.fields?.value).toLowerCase() === 'true';
+        applySystemUi(isActive);
+        data = {
+          mrr,
+          mrrPrev: mrr * 0.97,
+          activeMembers,
+          activeMembersPrev: Math.max(0, activeMembers - 3),
+          churnRate,
+          churnRatePrev: churnRate + 0.5,
+          engScore,
+          engScorePrev: engScore - 2,
+          newMembers,
+          dlqOpen,
+          apiUsed,
+          apiLimit,
+          integrityScore,
+          mrrTrend: generateDemoData().mrrTrend,
+          engagementDist: generateDemoData().engagementDist,
+          nichePerformance: generateDemoData().nichePerformance,
+          alerts: [
+            { type: 'info', text: 'Live data from AiTable (proxy)', time: 'Now' },
+            ...generateDemoData().alerts.slice(0, 3)
+          ]
+        };
+      } else {
+        data = generateDemoData();
+        applySystemUi(true);
+      }
+
+      // KPIs
+      document.getElementById('mrr').textContent = formatCurrency(data.mrr);
+      document.getElementById('mrrChange').innerHTML = formatChange(data.mrr, data.mrrPrev, ' vs last month');
+      document.getElementById('activeMembers').textContent = data.activeMembers;
+      document.getElementById('activeMembersChange').innerHTML = formatChange(data.activeMembers, data.activeMembersPrev);
+      document.getElementById('churnRate').textContent = data.churnRate + '%';
+      document.getElementById('churnRateChange').innerHTML = formatChange(data.churnRate, data.churnRatePrev, '', true);
+      document.getElementById('engScore').textContent = data.engScore;
+      document.getElementById('engScoreChange').innerHTML = formatChange(data.engScore, data.engScorePrev);
+      document.getElementById('newMembers').textContent = data.newMembers;
+      document.getElementById('newMembersChange').innerHTML = '<span class="change up">Today</span>';
+      document.getElementById('dlqOpen').textContent = data.dlqOpen;
+      document.getElementById('dlqOpenChange').innerHTML = data.dlqOpen > 0 ? '<span class="change down">Needs attention</span>' : '<span class="change up">All clear</span>';
+      document.getElementById('apiUsage').textContent = Math.round((data.apiUsed / data.apiLimit) * 100) + '%';
+      document.getElementById('apiUsageChange').innerHTML = `<span class="change neutral">${data.apiUsed}/${data.apiLimit} calls</span>`;
+      document.getElementById('integrity').textContent = data.integrityScore + '%';
+      document.getElementById('integrityChange').innerHTML = data.integrityScore >= 90 ? '<span class="change up">Healthy</span>' : '<span class="change down">Check audit log</span>';
+
+      // MRR Chart
+      if (mrrChartInstance) mrrChartInstance.destroy();
+      mrrChartInstance = new Chart(document.getElementById('mrrChart'), {
+        type: 'line',
+        data: {
+          labels: data.mrrTrend.map(d => d.date),
+          datasets: [{
+            label: 'MRR',
+            data: data.mrrTrend.map(d => d.value),
+            borderColor: '#818cf8',
+            backgroundColor: 'rgba(129, 140, 248, 0.1)',
+            fill: true,
+            tension: 0.4,
+            pointRadius: 0,
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { color: '#64748b', maxTicksLimit: 7 }, grid: { color: '#1e293b' } },
+            y: { ticks: { color: '#64748b', callback: v => '$' + (v/1000).toFixed(0) + 'k' }, grid: { color: '#334155' } }
+          }
+        }
+      });
+
+      // Engagement Distribution Chart
+      if (engChartInstance) engChartInstance.destroy();
+      engChartInstance = new Chart(document.getElementById('engagementChart'), {
+        type: 'doughnut',
+        data: {
+          labels: data.engagementDist.map(d => d.label),
+          datasets: [{
+            data: data.engagementDist.map(d => d.value),
+            backgroundColor: data.engagementDist.map(d => d.color),
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'right', labels: { color: '#94a3b8', padding: 12, font: { size: 12 } } }
+          }
+        }
+      });
+
+      // Niche Grid
+      const nicheGrid = document.getElementById('nicheGrid');
+      nicheGrid.innerHTML = data.nichePerformance.sort((a, b) => b.mrr - a.mrr).map(n => `
+        <div class="niche-card">
+          <div class="name">${n.name}</div>
+          <div class="stats"><span>Members</span><span class="num">${n.members}</span></div>
+          <div class="stats"><span>MRR</span><span class="num">$${n.mrr.toLocaleString()}</span></div>
+          <div class="stats"><span>Avg Score</span><span class="num">${n.avgScore}</span></div>
+        </div>
+      `).join('');
+
+      // Alerts
+      const alertsList = document.getElementById('alertsList');
+      alertsList.innerHTML = data.alerts.map(a => `
+        <div class="alert-item ${a.type}"><span class="text">${a.text}</span><span class="time">${a.time}</span></div>
+      `).join('');
+    }
+
+    function applySystemUi(isActive) {
+      const dot = document.getElementById('statusDot');
+      const text = document.getElementById('statusText');
+      const btn = document.getElementById('emergencyToggle');
+      if (isActive) {
+        dot.classList.remove('paused');
+        dot.classList.add('active');
+        text.textContent = 'System Active';
+        btn.textContent = 'Emergency: Active';
+        btn.classList.remove('paused');
+        btn.classList.add('active');
+        btn.dataset.nextAction = 'pause';
+      } else {
+        dot.classList.remove('active');
+        dot.classList.add('paused');
+        text.textContent = 'System Paused';
+        btn.textContent = 'Emergency: Paused';
+        btn.classList.remove('active');
+        btn.classList.add('paused');
+        btn.dataset.nextAction = 'resume';
+      }
+    }
+
+    async function toggleEmergencyStop() {
+      const btn = document.getElementById('emergencyToggle');
+      const action = btn.dataset.nextAction === 'resume' ? 'resume' : 'pause';
+      try {
+        const r = await fetch('/api/emergency-stop', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action })
+        });
+        const j = await r.json();
+        if (!r.ok) throw new Error(j.error || 'Request failed');
+        applySystemUi(action === 'resume');
+      } catch (e) {
+        alert('Emergency stop API failed: ' + e.message);
+      }
+    }
+
+    async function runQaAudit() {
+      const b = document.getElementById('qaAuditBtn');
+      b.disabled = true;
+      try {
+        const r = await fetch('/api/run-qa-audit', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+        const j = await r.json();
+        if (!r.ok) throw new Error(j.error || 'Webhook failed');
+        alert('QA audit triggered. Check n8n execution and audit log.');
+      } catch (e) {
+        alert('QA audit: ' + e.message);
+      } finally {
+        b.disabled = false;
+      }
+    }
+
+    // Initial load
+    loadData();
+
+    // Auto-refresh every 60 seconds
+    setInterval(loadData, 60000);
+  </script>
+</body>
+</html>

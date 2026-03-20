@@ -1,0 +1,3 @@
+event_id,event_type,contact_id,timestamp,status,routed_to,replayed_at,source
+evt_001,kickoff_form_submitted,cli_plumb_001,2026-03-05T10:02:00Z,routed,lead-qualification,,suitedash_webhook
+evt_002,engagement_score_dropped,cli_plumb_002,2026-03-17T08:15:00Z,routed,client-communication,,n8n_schedule

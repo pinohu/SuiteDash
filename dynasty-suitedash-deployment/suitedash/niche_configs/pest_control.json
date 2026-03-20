@@ -1,0 +1,75 @@
+{
+  "niche_id": "pest_control",
+  "display_name": "Pest Control Services",
+  "pack_number": 3,
+  "offer_structure": {
+    "setup_fee": 297,
+    "basic_monthly": 97,
+    "premium_monthly": 247,
+    "upsells": [
+      {"name": "Lead Generation", "price": 197, "billing": "monthly"},
+      {"name": "Seasonal Campaign Automation", "price": 147, "billing": "monthly"}
+    ]
+  },
+  "custom_fields": [
+    {"name": "Pest Types", "type": "multi_select", "options": ["Termites", "Rodents", "Insects", "Wildlife", "Bed Bugs", "Mosquitoes", "Commercial"]},
+    {"name": "License Type", "type": "dropdown", "options": ["Certified Applicator", "Registered Technician", "Qualified Applicator"]},
+    {"name": "Treatment Methods", "type": "multi_select", "options": ["Chemical", "Organic/Green", "IPM", "Heat Treatment", "Fumigation"]},
+    {"name": "Emergency Service", "type": "checkbox"},
+    {"name": "Service Radius", "type": "dropdown", "options": ["10mi", "25mi", "50mi"]},
+    {"name": "Residential/Commercial", "type": "dropdown", "options": ["Residential Only", "Commercial Only", "Both"]}
+  ],
+  "sales_pipeline": {
+    "name": "Pest Control Lead Acquisition",
+    "stages": [
+      {"name": "Lead Captured", "probability": 10},
+      {"name": "Contacted", "probability": 25},
+      {"name": "Inspection Scheduled", "probability": 50},
+      {"name": "Proposal Sent", "probability": 65},
+      {"name": "Won", "probability": 100},
+      {"name": "Lost", "probability": 0}
+    ]
+  },
+  "service_pipeline": {
+    "name": "Pest Control Service Delivery",
+    "stages": [
+      {"name": "Onboarding", "action": "License verification + profile"},
+      {"name": "Setup", "action": "Listing + treatment method showcase"},
+      {"name": "Active", "action": "Listed, receiving leads"},
+      {"name": "Seasonal Review", "action": "Pre-spring/pre-fall optimization"},
+      {"name": "Retainer", "action": "Annual partnership"}
+    ]
+  },
+  "circles": ["Pest Control-Free", "Pest Control-Basic", "Pest Control-Premium", "Pest Control-Churned", "Pest Control-VIP"],
+  "kickoff_form": {
+    "name": "Pest Control Business Registration",
+    "role_assignment": "Lead",
+    "fields": [
+      {"name": "Business Name", "type": "text", "required": true},
+      {"name": "Contact Name", "type": "text", "required": true},
+      {"name": "Email", "type": "email", "required": true},
+      {"name": "Phone", "type": "phone", "required": true},
+      {"name": "Pest Types Serviced", "type": "multi_select"},
+      {"name": "Treatment Methods", "type": "multi_select"},
+      {"name": "License Number", "type": "text"},
+      {"name": "Service Area", "type": "text"}
+    ],
+    "automations": ["Add to Pest Control-Free Circle", "Apply Folder Generator", "Assign Onboarding FLOW", "Fire n8n webhook"]
+  },
+  "project_template": {
+    "name": "Pest Control Onboarding",
+    "tasks": [
+      {"name": "License & Insurance Verification", "assigned_to": "Staff", "duration_days": 2},
+      {"name": "Profile & Treatment Method Setup", "assigned_to": "Staff", "duration_days": 3},
+      {"name": "Before/After Photo Gallery", "assigned_to": "Client", "duration_days": 5},
+      {"name": "Portal Training", "assigned_to": "Staff", "duration_days": 1},
+      {"name": "Go-Live", "assigned_to": "Staff", "duration_days": 1}
+    ]
+  },
+  "email_angles": [
+    "Day 0: Welcome to Pest Control Directory",
+    "Day 1: Complete your treatment method showcase",
+    "Day 3: Seasonal campaign timing strategies",
+    "Day 7: Success story from local pest control business"
+  ]
+}

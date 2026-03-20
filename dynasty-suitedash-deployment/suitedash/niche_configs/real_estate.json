@@ -1,0 +1,76 @@
+{
+  "niche_id": "real_estate",
+  "display_name": "Real Estate Agents",
+  "pack_number": 5,
+  "offer_structure": {
+    "setup_fee": 297,
+    "basic_monthly": 97,
+    "premium_monthly": 297,
+    "upsells": [
+      {"name": "Lead Generation", "price": 247, "billing": "monthly"},
+      {"name": "IDX Website Integration", "price": 497, "billing": "one-time"},
+      {"name": "Social Media Automation", "price": 197, "billing": "monthly"}
+    ]
+  },
+  "custom_fields": [
+    {"name": "License Type", "type": "dropdown", "options": ["Agent", "Broker", "Team Lead"]},
+    {"name": "MLS ID", "type": "text"},
+    {"name": "Service Areas", "type": "multi_select"},
+    {"name": "Specialties", "type": "multi_select", "options": ["Residential", "Commercial", "Luxury", "First-Time Buyers", "Investment", "Relocation"]},
+    {"name": "Transaction Volume (Annual)", "type": "dropdown", "options": ["1-10", "11-25", "26-50", "50+"]},
+    {"name": "Designations", "type": "multi_select", "options": ["CRS", "ABR", "GRI", "SRES", "SFR"]}
+  ],
+  "sales_pipeline": {
+    "name": "Real Estate Lead Acquisition",
+    "stages": [
+      {"name": "Lead"},
+      {"name": "Contacted"},
+      {"name": "Meeting Scheduled"},
+      {"name": "Proposal Sent"},
+      {"name": "Won"},
+      {"name": "Lost"}
+    ]
+  },
+  "service_pipeline": {
+    "name": "Real Estate Service Delivery",
+    "stages": [
+      {"name": "Onboarding"},
+      {"name": "Profile Live"},
+      {"name": "Active Agent"},
+      {"name": "Top Producer"},
+      {"name": "Renewal"}
+    ]
+  },
+  "circles": ["Real Estate-Free", "Real Estate-Basic", "Real Estate-Premium", "Real Estate-Churned", "Real Estate-VIP"],
+  "kickoff_form": {
+    "name": "Real Estate Agent Registration",
+    "role_assignment": "Lead",
+    "fields": [
+      {"name": "Agent/Broker Name", "type": "text", "required": true},
+      {"name": "Brokerage", "type": "text", "required": true},
+      {"name": "Email", "type": "email", "required": true},
+      {"name": "Phone", "type": "phone", "required": true},
+      {"name": "License Type", "type": "dropdown", "options": ["Agent", "Broker", "Team Lead"]},
+      {"name": "Service Areas", "type": "text"},
+      {"name": "Specialties", "type": "multi_select"},
+      {"name": "Annual Transaction Volume", "type": "dropdown"}
+    ],
+    "automations": ["Add to Real Estate-Free Circle", "Apply Folder Generator", "Assign Onboarding FLOW", "Fire n8n webhook"]
+  },
+  "project_template": {
+    "name": "Real Estate Agent Onboarding",
+    "tasks": [
+      {"name": "License Verification", "assigned_to": "Staff", "duration_days": 2},
+      {"name": "Profile & Headshot Setup", "assigned_to": "Client", "duration_days": 3},
+      {"name": "Listing Showcase Configuration", "assigned_to": "Staff", "duration_days": 3},
+      {"name": "Portal Training", "assigned_to": "Staff", "duration_days": 1},
+      {"name": "Go-Live", "assigned_to": "Staff", "duration_days": 1}
+    ]
+  },
+  "email_angles": [
+    "Day 0: Welcome to Real Estate Directory",
+    "Day 1: IDX integration setup for maximum visibility",
+    "Day 3: Specialization showcase - attract ideal clients",
+    "Day 7: Top agent in your area closed X deals from listing"
+  ]
+}

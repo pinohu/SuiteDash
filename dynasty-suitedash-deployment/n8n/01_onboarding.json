@@ -1,0 +1,263 @@
+{
+  "name": "Dynasty - Pack 1: Onboarding Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "suitedash-onboarding",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "name": "Webhook: Kickoff Form",
+      "type": "n8n-nodes-base.webhook",
+      "position": [
+        250,
+        300
+      ],
+      "webhookId": "onboarding-trigger"
+    },
+    {
+      "parameters": {
+        "url": "={{$env.SUITEDASH_BASE_URL}}/contact",
+        "authentication": "none",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "first_name",
+              "value": "={{$json.first_name}}"
+            },
+            {
+              "name": "last_name",
+              "value": "={{$json.last_name}}"
+            },
+            {
+              "name": "email",
+              "value": "={{$json.email}}"
+            },
+            {
+              "name": "phone",
+              "value": "={{$json.phone}}"
+            },
+            {
+              "name": "role",
+              "value": "lead"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Public-ID",
+              "value": "={{$env.SUITEDASH_API_ID}}"
+            },
+            {
+              "name": "X-Secret-Key",
+              "value": "={{$env.SUITEDASH_API_SECRET}}"
+            }
+          ]
+        }
+      },
+      "name": "Create SuiteDash Contact",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://aitable.ai/fusion/v1/datasheets/{{$env.AITABLE_CLIENTS_TABLE}}/records",
+        "authentication": "none",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "fields",
+              "value": "={\"client_id\": \"{{$json.contact_id}}\", \"name\": \"{{$json.first_name}} {{$json.last_name}}\", \"email\": \"{{$json.email}}\", \"niche\": \"{{$json.niche}}\", \"membership_tier\": \"free\", \"lifecycle_stage\": \"onboarding\", \"engagement_score\": 0, \"signup_date\": \"{{$now.toISO()}}\"}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.AITABLE_API_KEY}}"
+            }
+          ]
+        }
+      },
+      "name": "Create AiTable Record",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        710,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{$env.SMTP_HOST}}",
+        "fromEmail": "={{$env.SMTP_FROM_EMAIL}}",
+        "toEmail": "={{$json.email}}",
+        "subject": "Welcome to {{$json.directory_name}} — Your account is ready!",
+        "text": "Hi {{$json.first_name}},\n\nWelcome! Your listing portal is ready.\n\nHere are your next 3 steps:\n1. Complete your profile\n2. Upload your business photos\n3. Set your service area\n\nLogin here: {{$env.SUITEDASH_PORTAL_URL}}\n\nQuestions? Just reply to this email.\n\n— The {{$json.directory_name}} Team"
+      },
+      "name": "Send Welcome Email",
+      "type": "n8n-nodes-base.emailSend",
+      "position": [
+        940,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "days"
+      },
+      "name": "Wait 1 Day",
+      "type": "n8n-nodes-base.wait",
+      "position": [
+        1170,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{$env.SMTP_HOST}}",
+        "toEmail": "={{$json.email}}",
+        "subject": "Complete your profile in 5 minutes",
+        "text": "Hi {{$json.first_name}},\n\nPlumbers with complete profiles get 3x more inquiries.\n\nHere's your checklist:\n- Business description (keyword-rich)\n- High-quality photos\n- Service area\n- Credentials & licenses\n\nComplete it now: {{$env.SUITEDASH_PORTAL_URL}}\n\nNeed help? Reply to this email."
+      },
+      "name": "Day 1: Profile Completion",
+      "type": "n8n-nodes-base.emailSend",
+      "position": [
+        1400,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 2,
+        "unit": "days"
+      },
+      "name": "Wait 2 More Days",
+      "type": "n8n-nodes-base.wait",
+      "position": [
+        1630,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "toEmail": "={{$json.email}}",
+        "subject": "5 ways to make your listing stand out",
+        "text": "Hi {{$json.first_name}},\n\n5 tips from our top-performing members:\n1. Use keywords clients search for\n2. Upload 5+ high-quality photos\n3. Fill out every optional field\n4. Add all certifications\n5. Ask past clients for reviews\n\nOptimize your listing: {{$env.SUITEDASH_PORTAL_URL}}"
+      },
+      "name": "Day 3: Optimization Tips",
+      "type": "n8n-nodes-base.emailSend",
+      "position": [
+        1860,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook: Kickoff Form": {
+      "main": [
+        [
+          {
+            "node": "Create SuiteDash Contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create SuiteDash Contact": {
+      "main": [
+        [
+          {
+            "node": "Create AiTable Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create AiTable Record": {
+      "main": [
+        [
+          {
+            "node": "Send Welcome Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Welcome Email": {
+      "main": [
+        [
+          {
+            "node": "Wait 1 Day",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 1 Day": {
+      "main": [
+        [
+          {
+            "node": "Day 1: Profile Completion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Day 1: Profile Completion": {
+      "main": [
+        [
+          {
+            "node": "Wait 2 More Days",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 2 More Days": {
+      "main": [
+        [
+          {
+            "node": "Day 3: Optimization Tips",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "errorWorkflow": "dynasty-failure-handler"
+  },
+  "tags": [
+    {
+      "name": "dynasty"
+    },
+    {
+      "name": "onboarding"
+    },
+    {
+      "name": "pack-1"
+    }
+  ]
+}

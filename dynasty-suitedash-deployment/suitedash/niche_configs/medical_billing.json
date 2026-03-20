@@ -1,0 +1,75 @@
+{
+  "niche_id": "medical_billing",
+  "display_name": "Medical Billing Services",
+  "pack_number": 9,
+  "offer_structure": {
+    "setup_fee": 497,
+    "basic_monthly": 197,
+    "premium_monthly": 497,
+    "upsells": [
+      {"name": "Practice Management Integration", "price": 297, "billing": "monthly"},
+      {"name": "Compliance Audit Automation", "price": 197, "billing": "monthly"}
+    ]
+  },
+  "custom_fields": [
+    {"name": "Specialties Served", "type": "multi_select", "options": ["Family Practice", "Dental", "Mental Health", "Chiropractic", "Dermatology", "Orthopedics", "Multi-Specialty"]},
+    {"name": "Certifications", "type": "multi_select", "options": ["CPC", "CCS", "CMRS", "RHIT", "AAPC Member"]},
+    {"name": "EHR/PM Systems", "type": "multi_select", "options": ["Epic", "Cerner", "athenahealth", "AdvancedMD", "Kareo", "DrChrono"]},
+    {"name": "Services", "type": "multi_select", "options": ["Claims Submission", "Denial Management", "Credentialing", "AR Recovery", "Coding", "Compliance"]},
+    {"name": "Clients Under Management", "type": "dropdown", "options": ["1-5", "6-20", "21-50", "50+"]},
+    {"name": "HIPAA Compliant", "type": "checkbox"}
+  ],
+  "sales_pipeline": {
+    "name": "Medical Billing Lead Acquisition",
+    "stages": [
+      {"name": "Lead"},
+      {"name": "Contacted"},
+      {"name": "Needs Assessment"},
+      {"name": "Proposal"},
+      {"name": "Won"},
+      {"name": "Lost"}
+    ]
+  },
+  "service_pipeline": {
+    "name": "Medical Billing Service Delivery",
+    "stages": [
+      {"name": "Onboarding"},
+      {"name": "Compliance Check"},
+      {"name": "Active Listing"},
+      {"name": "Verified Partner"},
+      {"name": "Annual Review"}
+    ]
+  },
+  "circles": ["Medical Billing-Free", "Medical Billing-Basic", "Medical Billing-Premium", "Medical Billing-Churned", "Medical Billing-VIP"],
+  "kickoff_form": {
+    "name": "Medical Billing Service Registration",
+    "role_assignment": "Lead",
+    "fields": [
+      {"name": "Company Name", "type": "text", "required": true},
+      {"name": "Contact Name", "type": "text", "required": true},
+      {"name": "Email", "type": "email", "required": true},
+      {"name": "Phone", "type": "phone", "required": true},
+      {"name": "Specialties Served", "type": "multi_select"},
+      {"name": "Certifications", "type": "multi_select"},
+      {"name": "EHR/PM Systems", "type": "multi_select"},
+      {"name": "HIPAA Compliant", "type": "checkbox"}
+    ],
+    "automations": ["Add to Medical Billing-Free Circle", "Apply Folder Generator", "Assign Onboarding FLOW", "Fire n8n webhook"]
+  },
+  "project_template": {
+    "name": "Medical Billing Onboarding",
+    "tasks": [
+      {"name": "Certification & HIPAA Verification", "assigned_to": "Staff", "duration_days": 3},
+      {"name": "Profile & Specialty Setup", "assigned_to": "Staff", "duration_days": 3},
+      {"name": "Case Study / Testimonial Collection", "assigned_to": "Client", "duration_days": 7},
+      {"name": "Portal Training", "assigned_to": "Staff", "duration_days": 1},
+      {"name": "Go-Live", "assigned_to": "Staff", "duration_days": 1}
+    ]
+  },
+  "email_angles": [
+    "Day 0: Welcome to Medical Billing Directory",
+    "Day 1: HIPAA compliance verification - build client trust",
+    "Day 3: Specialization showcase - attract ideal practices",
+    "Day 7: How medical billing company increased practice revenue by 18%"
+  ]
+}
